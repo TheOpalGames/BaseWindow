@@ -1,6 +1,6 @@
 package basewindow.transformation;
 
-import basewindow.BaseWindow;
+import net.theopalgames.basewindow.BaseWindow;
 
 public abstract class Transformation
 {

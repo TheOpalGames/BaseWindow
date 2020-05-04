@@ -1,4 +1,4 @@
-package basewindow;
+package net.theopalgames.basewindow;
 
 import java.io.InputStreamReader;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package basewindow;
+package net.theopalgames.basewindow;
 
 import basewindow.transformation.Transformation;
 import basewindow.transformation.Translation;

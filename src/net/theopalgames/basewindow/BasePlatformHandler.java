@@ -1,4 +1,4 @@
-package basewindow;
+package net.theopalgames.basewindow;
 
 public abstract class BasePlatformHandler
 {
