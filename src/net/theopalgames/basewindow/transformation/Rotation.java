@@ -1,4 +1,4 @@
-package basewindow.transformation;
+package net.theopalgames.basewindow.transformation;
 
 import net.theopalgames.basewindow.BaseWindow;
 

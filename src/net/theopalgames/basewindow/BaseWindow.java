@@ -1,10 +1,10 @@
 package net.theopalgames.basewindow;
 
-import basewindow.transformation.Transformation;
-import basewindow.transformation.Translation;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import net.theopalgames.basewindow.transformation.Transformation;
+import net.theopalgames.basewindow.transformation.Translation;
 
 public abstract class BaseWindow
 {
