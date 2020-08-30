@@ -1,4 +1,10 @@
 .DS_Store
+
+# eclipse
 /bin/
 .classpath
 .project
+
+# intellij
+BaseWindow.iml
+.idea
