@@ -17,37 +17,29 @@ public class SwingPanel extends JPanel
     {
         this.window = w;
 
-        this.addMouseListener(new InputMouse(w));
         this.addMouseWheelListener(new InputScroll());
-        this.addMouseMotionListener(new InputMouse(w));
 
-        timer = new Timer(0, new ActionListener()
+        InputMouse mouse = new InputMouse(w);
+        this.addMouseListener(mouse);
+        this.addMouseMotionListener(mouse);
+
+        timer = new Timer(0, event ->
         {
+            try {
+                w.startTiming();
 
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
-                    w.startTiming();
+                w.absoluteWidth = getWidth();
+                w.absoluteHeight = getHeight();
 
-                    w.absoluteWidth = getWidth();
-                    w.absoluteHeight = getHeight();
+                w.updater.update();
 
-                    w.updater.update();
+                repaint();
 
-                    repaint();
-
-                    w.stopTiming();
-                }
-                catch (Exception exception)
-                {
+                w.stopTiming();
+            } catch (Exception exception) {
 //                    Game.exitToCrash(exception);
-                    // TODO: better crash handling
-                }
-
+                // TODO: better crash handling
             }
-
         });
     }
 
