@@ -1,10 +1,12 @@
 package net.theopalgames.basewindow;
+//import basewindow.transformation.Transformation;
+//import basewindow.transformation.Translation;
+import net.theopalgames.basewindow.*;
+import net.theopalgames.basewindow.transformation.Transformation;
+import net.theopalgames.basewindow.transformation.Translation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import net.theopalgames.basewindow.transformation.Transformation;
-import net.theopalgames.basewindow.transformation.Translation;
 
 public abstract class BaseWindow
 {
@@ -75,6 +77,11 @@ public abstract class BaseWindow
     public BaseVibrationPlayer vibrationPlayer;
     public boolean vibrationsEnabled = false;
 
+    public boolean antialiasingSupported = false;
+    public boolean antialiasingEnabled = false;
+
+    public static final HashMap<Integer, String> keyNames = new HashMap<>();
+
     public BasePlatformHandler platformHandler;
 
     public BaseWindow(String name, int x, int y, int z, IUpdater u, IDrawer d, IWindowHandler w, boolean vsync, boolean showMouse)
@@ -91,6 +98,8 @@ public abstract class BaseWindow
 
         if (System.getProperties().toString().contains("Mac OS X"))
             mac = true;
+
+        this.setupKeyCodes();
     }
 
     public void startTiming()
@@ -135,17 +144,26 @@ public abstract class BaseWindow
         }
 
         frameFrequency = Math.max(0, totalFrequency / frameFrequencies.size());
+        //frameFrequency = freq;
     }
 
     public abstract void run();
 
     public abstract void setShowCursor(boolean show);
 
+    public abstract void setIcon(String icon);
+
     public abstract void fillOval(double x, double y, double sX, double sY);
 
     public abstract void fillOval(double x, double y, double z, double sX, double sY, boolean depthTest);
 
     public abstract void fillFacingOval(double x, double y, double z, double sX, double sY, boolean depthTest);
+
+    public abstract void fillGlow(double x, double y, double sX, double sY);
+
+    public abstract void fillGlow(double x, double y, double z, double sX, double sY, boolean depthTest);
+
+    public abstract void fillFacingGlow(double x, double y, double z, double sX, double sY, boolean depthTest);
 
     public abstract void setColor(double r, double g, double b, double a);
 
@@ -172,21 +190,31 @@ public abstract class BaseWindow
 
     public abstract void drawRect(double x, double y, double sX, double sY);
 
-    public abstract void drawImage(double x, double y, double sX, double sY, String image, boolean scaled);
-
-    public abstract void drawImage(double x, double y, double z, double sX, double sY, String image, boolean scaled);
-
     public abstract void setUpPerspective();
 
     public abstract void applyTransformations();
 
     public abstract void loadPerspective();
 
+    public abstract void drawImage(double x, double y, double sX, double sY, String image, boolean scaled);
+
+    public abstract void drawImage(double x, double y, double z, double sX, double sY, String image, boolean scaled);
+
     public abstract void drawImage(double x, double y, double sX, double sY, double u1, double v1, double u2, double v2, String image, boolean scaled);
 
     public abstract void drawImage(double x, double y, double z, double sX, double sY, double u1, double v1, double u2, double v2, String image, boolean scaled);
 
     public abstract void drawImage(double x, double y, double z, double sX, double sY, double u1, double v1, double u2, double v2, String image, boolean scaled, boolean depthtest);
+
+    public abstract void drawImage(double x, double y, double sX, double sY, String image, double rotation, boolean scaled);
+
+    public abstract void drawImage(double x, double y, double z, double sX, double sY, String image, double rotation, boolean scaled);
+
+    public abstract void drawImage(double x, double y, double sX, double sY, double u1, double v1, double u2, double v2, String image, double rotation, boolean scaled);
+
+    public abstract void drawImage(double x, double y, double z, double sX, double sY, double u1, double v1, double u2, double v2, String image, double rotation, boolean scaled);
+
+    public abstract void drawImage(double x, double y, double z, double sX, double sY, double u1, double v1, double u2, double v2, String image, double rotation, boolean scaled, boolean depthtest);
 
     public abstract String getClipboard();
 
@@ -198,6 +226,8 @@ public abstract class BaseWindow
 
     public abstract String getKeyText(int key);
 
+    public abstract String getTextKeyText(int key);
+
     public abstract int translateKey(int key);
 
     public abstract int translateTextKey(int key);
@@ -205,4 +235,90 @@ public abstract class BaseWindow
     public abstract void transform(double[] matrix);
 
     public abstract double getEdgeBounds();
+
+    public abstract void setBatchMode(boolean enabled, boolean quads, boolean depth);
+
+    public abstract void setBatchMode(boolean enabled, boolean quads, boolean depth, boolean glow);
+
+    public abstract void addVertex(double x, double y, double z);
+
+    public abstract void addVertex(double x, double y);
+
+    public void setupKeyCodes()
+    {
+        keyNames.put(InputCodes.KEY_UNKNOWN, "Unknown key");
+        keyNames.put(InputCodes.KEY_SPACE, "Space");
+        keyNames.put(InputCodes.KEY_WORLD_1, "World 1");
+        keyNames.put(InputCodes.KEY_WORLD_2, "World 2");
+        keyNames.put(InputCodes.KEY_ESCAPE, "Escape");
+        keyNames.put(InputCodes.KEY_ENTER, "Enter");
+        keyNames.put(InputCodes.KEY_TAB, "Tab");
+        keyNames.put(InputCodes.KEY_BACKSPACE, "Backspace");
+        keyNames.put(InputCodes.KEY_INSERT, "Insert");
+        keyNames.put(InputCodes.KEY_DELETE, "Delete");
+        keyNames.put(InputCodes.KEY_RIGHT, "Right");
+        keyNames.put(InputCodes.KEY_LEFT, "Left");
+        keyNames.put(InputCodes.KEY_DOWN, "Down");
+        keyNames.put(InputCodes.KEY_UP, "Up");
+        keyNames.put(InputCodes.KEY_PAGE_UP, "Page up");
+        keyNames.put(InputCodes.KEY_PAGE_DOWN, "Page down");
+        keyNames.put(InputCodes.KEY_HOME, "Home");
+        keyNames.put(InputCodes.KEY_END, "End");
+        keyNames.put(InputCodes.KEY_CAPS_LOCK, "Caps lock");
+        keyNames.put(InputCodes.KEY_SCROLL_LOCK, "Scroll lock");
+        keyNames.put(InputCodes.KEY_NUM_LOCK, "Num lock");
+        keyNames.put(InputCodes.KEY_PRINT_SCREEN, "Print screen");
+        keyNames.put(InputCodes.KEY_PAUSE, "Pause");
+        keyNames.put(InputCodes.KEY_F1, "F1");
+        keyNames.put(InputCodes.KEY_F2, "F2");
+        keyNames.put(InputCodes.KEY_F3, "F3");
+        keyNames.put(InputCodes.KEY_F4, "F4");
+        keyNames.put(InputCodes.KEY_F5, "F5");
+        keyNames.put(InputCodes.KEY_F6, "F6");
+        keyNames.put(InputCodes.KEY_F7, "F7");
+        keyNames.put(InputCodes.KEY_F8, "F8");
+        keyNames.put(InputCodes.KEY_F9, "F9");
+        keyNames.put(InputCodes.KEY_F10, "F10");
+        keyNames.put(InputCodes.KEY_F11, "F11");
+        keyNames.put(InputCodes.KEY_F12, "F12");
+        keyNames.put(InputCodes.KEY_F13, "F13");
+        keyNames.put(InputCodes.KEY_F14, "F14");
+        keyNames.put(InputCodes.KEY_F15, "F15");
+        keyNames.put(InputCodes.KEY_F16, "F16");
+        keyNames.put(InputCodes.KEY_F17, "F17");
+        keyNames.put(InputCodes.KEY_F18, "F18");
+        keyNames.put(InputCodes.KEY_F19, "F19");
+        keyNames.put(InputCodes.KEY_F20, "F20");
+        keyNames.put(InputCodes.KEY_F21, "F21");
+        keyNames.put(InputCodes.KEY_F22, "F22");
+        keyNames.put(InputCodes.KEY_F23, "F23");
+        keyNames.put(InputCodes.KEY_F24, "F24");
+        keyNames.put(InputCodes.KEY_F25, "F25");
+        keyNames.put(InputCodes.KEY_KP_0, "Keypad 0");
+        keyNames.put(InputCodes.KEY_KP_1, "Keypad 1");
+        keyNames.put(InputCodes.KEY_KP_2, "Keypad 2");
+        keyNames.put(InputCodes.KEY_KP_3, "Keypad 3");
+        keyNames.put(InputCodes.KEY_KP_4, "Keypad 4");
+        keyNames.put(InputCodes.KEY_KP_5, "Keypad 5");
+        keyNames.put(InputCodes.KEY_KP_6, "Keypad 6");
+        keyNames.put(InputCodes.KEY_KP_7, "Keypad 7");
+        keyNames.put(InputCodes.KEY_KP_8, "Keypad 8");
+        keyNames.put(InputCodes.KEY_KP_9, "Keypad 9");
+        keyNames.put(InputCodes.KEY_KP_DECIMAL, "Keypad decimal");
+        keyNames.put(InputCodes.KEY_KP_DIVIDE, "Keypad divide");
+        keyNames.put(InputCodes.KEY_KP_MULTIPLY, "Keypad multiply");
+        keyNames.put(InputCodes.KEY_KP_SUBTRACT, "Keypad subtract");
+        keyNames.put(InputCodes.KEY_KP_ADD, "Keypad add");
+        keyNames.put(InputCodes.KEY_KP_ENTER, "Keypad enter");
+        keyNames.put(InputCodes.KEY_KP_EQUAL, "Keypad equal");
+        keyNames.put(InputCodes.KEY_LEFT_SHIFT, "Left shift");
+        keyNames.put(InputCodes.KEY_LEFT_CONTROL, "Left control");
+        keyNames.put(InputCodes.KEY_LEFT_ALT, "Left alt");
+        keyNames.put(InputCodes.KEY_LEFT_SUPER, "Left super");
+        keyNames.put(InputCodes.KEY_RIGHT_SHIFT, "Right shift");
+        keyNames.put(InputCodes.KEY_RIGHT_CONTROL, "Right control");
+        keyNames.put(InputCodes.KEY_RIGHT_ALT, "Right alt");
+        keyNames.put(InputCodes.KEY_RIGHT_SUPER, "Right super");
+        keyNames.put(InputCodes.KEY_MENU, "Menu");
+    }
 }
