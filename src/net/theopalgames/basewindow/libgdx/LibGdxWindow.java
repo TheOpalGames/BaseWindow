@@ -21,7 +21,7 @@ public class LibGdxWindow extends BaseWindow
 {
     public Application.ApplicationType appType;
 
-    public boolean previousKeyboard = false;
+    private boolean previousKeyboard = false;
 
     public ImmediateModeRenderer20 renderer;
     public SpriteBatch spriteBatch;
@@ -63,9 +63,9 @@ public class LibGdxWindow extends BaseWindow
     public float qz3;
 
 
-    public LibGdxWindow(String name, int x, int y, int z, IUpdater u, IDrawer d, IWindowHandler w, boolean vsync, boolean showMouse)
+    public LibGdxWindow(Game game, String name, int x, int y, int z, IUpdater u, IDrawer d, IWindowHandler w, boolean vsync, boolean showMouse)
     {
-        super(name, x, y, z, u, d, w, vsync, showMouse);
+        super(game, name, x, y, z, u, d, w, vsync, showMouse);
     }
 
     public void initialize()
@@ -375,13 +375,13 @@ public class LibGdxWindow extends BaseWindow
         if (this.previousKeyboard != this.showKeyboard)
         {
 //            Gdx.input.setOnscreenKeyboardVisible(Game.game.window.showKeyboard);
-            // TODO: Less Tanks integration
+            Gdx.input.setOnscreenKeyboardVisible(showKeyboard);
             this.previousKeyboard = this.showKeyboard;
         }
 
         if (Gdx.app.getType() == Application.ApplicationType.Android)
 //            this.keyboardFraction = Tanks.keyboardHeightListener.getUsableWindowHeight();
-            // TODO: Another Tanks thing
+            this.keyboardFraction = game.getUsableWindowHeight();
 
         this.updater.update();
         this.drawer.draw();

@@ -38,7 +38,7 @@ public class SwingPanel extends JPanel
                 w.stopTiming();
             } catch (Exception exception) {
 //                    Game.exitToCrash(exception);
-                // TODO: better crash handling
+                window.getGame().onError(exception);
             }
         });
     }

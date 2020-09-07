@@ -1,9 +1,6 @@
 package net.theopalgames.basewindow.swing;
 
-import net.theopalgames.basewindow.BaseWindow;
-import net.theopalgames.basewindow.IDrawer;
-import net.theopalgames.basewindow.IUpdater;
-import net.theopalgames.basewindow.IWindowHandler;
+import net.theopalgames.basewindow.*;
 import net.theopalgames.basewindow.swing.input.InputKeyboard;
 
 import javax.swing.*;
@@ -25,12 +22,16 @@ public class SwingWindow extends BaseWindow
 
     public ArrayList<Integer> rawTextInput = new ArrayList<Integer>();
 
-    public SwingWindow(String name, int x, int y, int z, IUpdater u, IDrawer d, IWindowHandler w, boolean vsync, boolean showMouse)
+    public SwingWindow(Game game, String name, int x, int y, int z, IUpdater u, IDrawer d, IWindowHandler w, boolean vsync, boolean showMouse)
     {
-        super(name, x, y, z, u, d, w, vsync, showMouse);
+        super(game, name, x, y, z, u, d, w, vsync, showMouse);
         this.self = this;
         this.fontRenderer = new SwingFontRenderer(this);
         this.clipboard = new TextClipboard();
+    }
+
+    Game getGame() {
+        return game;
     }
 
     @Override
@@ -39,18 +40,13 @@ public class SwingWindow extends BaseWindow
         panel = new SwingPanel(self);
         drawing = new SwingDrawing(self, (int) self.absoluteWidth, (int) self.absoluteHeight);
 
-        SwingUtilities.invokeLater(
-                new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        drawing.setTitle(self.name);
-                        drawing.add(panel);
+        SwingUtilities.invokeLater( // Stop procrastinating?
+                () -> {
+                    drawing.setTitle(self.name);
+                    drawing.add(panel);
 
-                        //window.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("resources/icon64.png")));
-                        panel.startTimer();
-                    }
+                    //window.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("resources/icon64.png")));
+                    panel.startTimer();
                 });
     }
 

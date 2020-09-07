@@ -84,8 +84,11 @@ public abstract class BaseWindow
 
     public BasePlatformHandler platformHandler;
 
-    public BaseWindow(String name, int x, int y, int z, IUpdater u, IDrawer d, IWindowHandler w, boolean vsync, boolean showMouse)
+    protected Game game;
+
+    public BaseWindow(Game game, String name, int x, int y, int z, IUpdater u, IDrawer d, IWindowHandler w, boolean vsync, boolean showMouse)
     {
+        this.game = game;
         this.name = name;
         this.absoluteWidth = x;
         this.absoluteHeight = y;
