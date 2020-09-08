@@ -27,11 +27,12 @@ public class LibGdxAppAdapter extends ApplicationAdapter {
         // window = new LibGdxWindow("Tanks", 1400, 900, 1000, new GameUpdater(), new GameDrawer(), new GameWindowHandler(), false, true);
 
         window.appType = appType;
-//        Game.game.fileManager = new LibGdxFileManager();
+        window.fileManager = new LibGdxFileManager();
 //        Game.framework = Game.Framework.libgdx;
 //        Game.initScript();
 //        Game.game.window = window;
-        // TODO: More Tanks generalization.
+
+        window.getGame().init(window);
     }
 
     @Override

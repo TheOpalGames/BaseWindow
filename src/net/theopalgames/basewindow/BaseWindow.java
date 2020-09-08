@@ -86,6 +86,8 @@ public abstract class BaseWindow
 
     protected Game game;
 
+    public BaseFileManager fileManager;
+
     public BaseWindow(Game game, String name, int x, int y, int z, IUpdater u, IDrawer d, IWindowHandler w, boolean vsync, boolean showMouse)
     {
         this.game = game;
@@ -324,4 +326,6 @@ public abstract class BaseWindow
         keyNames.put(InputCodes.KEY_RIGHT_SUPER, "Right super");
         keyNames.put(InputCodes.KEY_MENU, "Menu");
     }
+
+    public abstract Framework getFramework();
 }

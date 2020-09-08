@@ -1243,4 +1243,9 @@ public class LwjglWindow extends BaseWindow
     {
         glVertex2d(x, y);
     }
+
+    @Override
+    public Framework getFramework() {
+        return Framework.LWJGL;
+    }
 }

@@ -68,6 +68,10 @@ public class LibGdxWindow extends BaseWindow
         super(game, name, x, y, z, u, d, w, vsync, showMouse);
     }
 
+    Game getGame() { // accessor method because game is protected in superclass.
+        return game;
+    }
+
     public void initialize()
     {
         setupKeyMap();
@@ -1245,6 +1249,11 @@ public class LibGdxWindow extends BaseWindow
 
         spriteBatch.setColor(this.colorR, this.colorG, this.colorB, this.colorA);
         spriteBatch.draw(texture, (float) x, (float) y, (float) width, (float) height, (float) u1, (float) v1, (float) u2, (float) v2);
+    }
+
+    @Override
+    public Framework getFramework() {
+        return Framework.LIBGDX;
     }
 }
 

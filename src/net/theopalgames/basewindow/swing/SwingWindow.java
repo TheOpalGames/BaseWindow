@@ -319,4 +319,9 @@ public class SwingWindow extends BaseWindow
     {
 
     }
+
+    @Override
+    public Framework getFramework() {
+        return Framework.SWING;
+    }
 }
