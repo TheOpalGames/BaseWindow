@@ -46,6 +46,7 @@ public class HtmlLauncher extends GwtApplication {
     @Override
     public LibGdxAppAdapter createApplicationListener ()
     {
+        LibGdxAppAdapter.initialize(); // before the return
         return new LibGdxAppAdapter();
     }
 }
