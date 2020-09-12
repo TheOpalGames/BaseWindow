@@ -1,11 +1,11 @@
 package net.theopalgames.polywindow.libgdx;
 
+import com.apple.eio.FileManager;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import net.theopalgames.polywindow.BasePlatformHandler;
-import net.theopalgames.polywindow.BaseVibrationPlayer;
+import net.theopalgames.polywindow.*;
 
 public class LibGdxAppAdapter extends ApplicationAdapter {
     public static LibGdxAppAdapter instance;
@@ -23,11 +23,19 @@ public class LibGdxAppAdapter extends ApplicationAdapter {
 
     public static void initialize()
     {
-        // TODO: Too specific.
-        // window = new LibGdxWindow("Tanks", 1400, 900, 1000, new GameUpdater(), new GameDrawer(), new GameWindowHandler(), false, true);
+        BaseFileManager files = new LibGdxFileManager();
+
+        Game game;
+        try {
+            game = Launcher.createGame(files);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        window = new LibGdxWindow(game, "Tanks", 1400, 900, 1000, false, true);
 
         window.appType = appType;
-        window.fileManager = new LibGdxFileManager();
+        window.fileManager = files;
 //        Game.framework = Game.Framework.libgdx;
 //        Game.initScript();
 //        Game.game.window = window;
@@ -71,8 +79,7 @@ public class LibGdxAppAdapter extends ApplicationAdapter {
     }
 
     @Override
-    public void render()
-    {
+    public void render() {
         window.render();
     }
 

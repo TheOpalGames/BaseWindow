@@ -63,9 +63,9 @@ public class LibGdxWindow extends BaseWindow
     public float qz3;
 
 
-    public LibGdxWindow(Game game, String name, int x, int y, int z, IUpdater u, IDrawer d, IWindowHandler w, boolean vsync, boolean showMouse)
+    public LibGdxWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse)
     {
-        super(game, name, x, y, z, u, d, w, vsync, showMouse);
+        super(game, name, x, y, z, vsync, showMouse);
     }
 
     Game getGame() { // accessor method because game is protected in superclass.
@@ -407,13 +407,13 @@ public class LibGdxWindow extends BaseWindow
     @Override
     public void run()
     {
-
+        // NOOP - nothing to set up, already running
     }
 
     @Override
     public void setShowCursor(boolean show)
     {
-
+        // also NOOP
     }
 
     @Override

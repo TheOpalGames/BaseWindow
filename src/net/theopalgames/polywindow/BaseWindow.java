@@ -87,17 +87,17 @@ public abstract class BaseWindow
 
     public BaseFileManager fileManager;
 
-    public BaseWindow(Game game, String name, int x, int y, int z, IUpdater u, IDrawer d, IWindowHandler w, boolean vsync, boolean showMouse)
+    public BaseWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse)
     {
         this.game = game;
         this.name = name;
         this.absoluteWidth = x;
         this.absoluteHeight = y;
         this.absoluteDepth = z;
-        this.updater = u;
-        this.drawer = d;
+        this.updater = game.getUpdater();
+        this.drawer = game.getDrawer();
         this.vsync = vsync;
-        this.windowHandler = w;
+        this.windowHandler = game.getWindowHandler();
         this.showMouseOnLaunch = showMouse;
 
         if (System.getProperties().toString().contains("Mac OS X"))

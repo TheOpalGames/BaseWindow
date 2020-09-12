@@ -4,8 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import net.theopalgames.polywindow.BaseFileManager;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.InputStream;
 
 public class LibGdxFileManager extends BaseFileManager {
     @Override
@@ -15,12 +14,14 @@ public class LibGdxFileManager extends BaseFileManager {
     }
 
     @Override
-    public ArrayList<String> getInternalFileContents(String file)
+    public InputStream getInternalFileContents(String file)
     {
         if (file.startsWith("/"))
             file = file.substring(1);
 
         FileHandle f = Gdx.files.internal(file);
-        return new ArrayList<>(Arrays.asList(f.readString().replace("\r", "").split("\n")));
+//        return new ArrayList<>(Arrays.asList(f.readString().replace("\r", "").split("\n")));
+
+        return f.read();
     }
 }

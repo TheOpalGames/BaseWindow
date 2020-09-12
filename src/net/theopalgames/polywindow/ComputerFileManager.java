@@ -1,8 +1,6 @@
 package net.theopalgames.polywindow;
 
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.io.InputStream;
 
 public class ComputerFileManager extends BaseFileManager
 {
@@ -13,17 +11,19 @@ public class ComputerFileManager extends BaseFileManager
     }
 
     @Override
-    public ArrayList<String> getInternalFileContents(String file)
+    public InputStream getInternalFileContents(String file)
     {
-        Scanner s = new Scanner(new InputStreamReader(getClass().getResourceAsStream(file)));
-        ArrayList<String> al = new ArrayList<String>();
+//        Scanner s = new Scanner(new InputStreamReader(getClass().getResourceAsStream(file)));
+//        List<String> al = new ArrayList<String>();
+//
+//        while (s.hasNext())
+//        {
+//            al.add(s.nextLine());
+//        }
+//
+//        s.close();
+//        return al;
 
-        while (s.hasNext())
-        {
-            al.add(s.nextLine());
-        }
-
-        s.close();
-        return al;
+        return getClass().getResourceAsStream(file);
     }
 }

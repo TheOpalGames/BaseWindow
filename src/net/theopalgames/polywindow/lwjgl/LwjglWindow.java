@@ -47,9 +47,9 @@ public class LwjglWindow extends BaseWindow
 
     public boolean batchMode = false;
 
-    public LwjglWindow(Game game, String name, int x, int y, int z, IUpdater u, IDrawer d, IWindowHandler w, boolean vsync, boolean showMouse)
+    public LwjglWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse)
     {
-        super(game, name, x, y, z, u, d, w, vsync, showMouse);
+        super(game, name, x, y, z, vsync, showMouse);
 
         try
         {
