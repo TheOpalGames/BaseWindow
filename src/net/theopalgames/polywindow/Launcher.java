@@ -16,10 +16,10 @@ public class Launcher {
         BaseWindow window;
 
         if (Arrays.asList(args).contains("swing")) {
-            if (game.isSwingSupported())
-                window = new SwingWindow(game, game.getName(), 1400, 900, 1000, false, true);
-
-            throw new IllegalArgumentException("Cannot use Swing as it is not supported in " + game.getName());
+            if (!game.isSwingSupported())
+                throw new IllegalArgumentException("Cannot use Swing as it is not supported in " + game.getName());
+            
+            window = new SwingWindow(game, game.getName(), 1400, 900, 1000, false, true);
         } else
             window = new LwjglWindow(game, game.getName(), 1400, 900, 1000, false, true);
 
