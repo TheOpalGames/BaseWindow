@@ -8,3 +8,10 @@
 # intellij
 BaseWindow.iml
 .idea
+
+# xcode
+*.xcodeproj
+*.xcassets
+*.lproj
+Info.plist
+PolyWindowNative.entitlements
