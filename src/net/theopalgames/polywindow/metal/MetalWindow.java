@@ -39,6 +39,11 @@ public class MetalWindow extends BaseWindow {
     private MetalNative metal;
     private long ctx;
 
+    private float colorR;
+    private float colorG;
+    private float colorB;
+    private float colorA;
+
     public MetalWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse) {
         super(game, name, x, y, z, vsync, showMouse);
     }
@@ -97,12 +102,15 @@ public class MetalWindow extends BaseWindow {
 
     @Override
     public void setColor(double r, double g, double b, double a) {
-
+        colorR = (float) r/255;
+        colorG = (float) g/255;
+        colorB = (float) b/255;
+        colorA = (float) a/255;
     }
 
     @Override
     public void setColor(double r, double g, double b) {
-
+        setColor(r, g, b, 255.0);
     }
 
     @Override
@@ -117,7 +125,17 @@ public class MetalWindow extends BaseWindow {
 
     @Override
     public void fillRect(double x, double y, double sX, double sY) {
+        metal.draw(ctx, MetalConstants.PRIMITIVE_TRIANGLE, new float[] { // 2 right triangles
+                // Triangle 1
+                (float) x,      (float) y,      0.0F, 1.0F,        colorR, colorG, colorB, colorA,
+                (float) (x+sX), (float) y,      0.0F, 1.0F,        colorR, colorG, colorB, colorA,
+                (float) x,      (float) (y+sY), 0.0F, 1.0F,        colorR, colorG, colorB, colorA,
 
+                // Triangle 2
+                (float) (x+sX), (float) y,      0.0F, 1.0F,        colorR, colorG, colorB, colorA,
+                (float) x,      (float) (y+sY), 0.0F, 1.0F,        colorR, colorG, colorB, colorA,
+                (float) (x+sX), (float) (y+sY), 0.0F, 1.0F,        colorR, colorG, colorB, colorA
+        });
     }
 
     @Override

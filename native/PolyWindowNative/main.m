@@ -18,7 +18,7 @@ PolyWindowContext *init() {
     return [[PolyWindowContext alloc] init];
 }
 
-void draw(PolyWindowContext *ctx, int mode, float vertexData[]) {
+void draw(PolyWindowContext *ctx, int primitive, float vertexData[]) {
     id<MTLCommandBuffer> buf = [ctx.commands commandBuffer];
     // more TODO
 }
