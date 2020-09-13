@@ -4,9 +4,40 @@ import net.theopalgames.polywindow.BaseWindow;
 import net.theopalgames.polywindow.Framework;
 import net.theopalgames.polywindow.Game;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class MetalWindow extends BaseWindow {
+    private static boolean loaded;
+
+    private static synchronized void loadNative() throws IOException {
+        if (loaded)
+            return;
+
+        File file = File.createTempFile("polywindow-metal", ".dylib")
+
+        try {
+            InputStream in = MetalWindow.class.getResourceAsStream("/metal.dylib");
+            byte[] bytes = new byte[in.available()];
+            in.read(bytes);
+
+            try (FileOutputStream out = new FileOutputStream(file)) {
+                out.write(bytes);
+            }
+
+            System.load(file.getName());
+        } finally {
+            file.delete();
+        }
+
+        loaded = true;
+    }
+
+    private MetalNative metal;
+    private long ctx;
 
     public MetalWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse) {
         super(game, name, x, y, z, vsync, showMouse);
@@ -14,7 +45,14 @@ public class MetalWindow extends BaseWindow {
 
     @Override
     public void run() {
+        try {
+            loadNative();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load Metal native", e);
+        }
 
+        metal = new MetalNative();
+        ctx = metal.init();
     }
 
     @Override
