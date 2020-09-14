@@ -17,7 +17,7 @@ public class MetalWindow extends BaseWindow {
         if (loaded)
             return;
 
-        File file = File.createTempFile("polywindow-metal", ".dylib")
+        File file = File.createTempFile("polywindow-metal", ".dylib");
 
         try {
             InputStream in = MetalWindow.class.getResourceAsStream("/metal.dylib");
@@ -125,37 +125,104 @@ public class MetalWindow extends BaseWindow {
 
     @Override
     public void fillRect(double x, double y, double sX, double sY) {
-        metal.draw(ctx, MetalConstants.PRIMITIVE_TRIANGLE, new float[] { // 2 right triangles
-                // Triangle 1
-                (float) x,      (float) y,      0.0F, 1.0F,        colorR, colorG, colorB, colorA,
-                (float) (x+sX), (float) y,      0.0F, 1.0F,        colorR, colorG, colorB, colorA,
-                (float) x,      (float) (y+sY), 0.0F, 1.0F,        colorR, colorG, colorB, colorA,
-
-                // Triangle 2
-                (float) (x+sX), (float) y,      0.0F, 1.0F,        colorR, colorG, colorB, colorA,
-                (float) x,      (float) (y+sY), 0.0F, 1.0F,        colorR, colorG, colorB, colorA,
-                (float) (x+sX), (float) (y+sY), 0.0F, 1.0F,        colorR, colorG, colorB, colorA
-        });
+        fillQuad(x, y, x+sX, y, x+sX, y+sY, x, y+sY);
     }
 
     @Override
     public void fillBox(double x, double y, double z, double sX, double sY, double sZ) {
-
+        fillBox(x, y, z, sX, sY, sZ, (byte) 0);
     }
 
     @Override
     public void fillBox(double x, double y, double z, double sX, double sY, double sZ, byte options) {
-
+        fillQuadBox(x, y, x+sX, y, x+sX, y+sY, x, y+sY, z, sZ, options);
     }
 
     @Override
     public void fillQuad(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
+        fillQuad(x1, y1, x2, y2, x3, y3, x4, y4, 0.0);
+    }
 
+    public void fillQuad(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4, double z) {
+        metal.draw(ctx, MetalConstants.PRIMITIVE_TRIANGLE, new float[] { // 2 triangles
+                // Triangle 1
+                (float) x1,      (float) y1,      (float) z, 1.0F,        colorR, colorG, colorB, colorA,
+                (float) x2,      (float) y2,      (float) z, 1.0F,        colorR, colorG, colorB, colorA,
+                (float) x3,      (float) y3,      (float) z, 1.0F,        colorR, colorG, colorB, colorA,
+
+                // Triangle 2
+                (float) x3,      (float) y3,      (float) z, 1.0F,        colorR, colorG, colorB, colorA,
+                (float) x4,      (float) y4,      (float) z, 1.0F,        colorR, colorG, colorB, colorA,
+                (float) x1,      (float) y1,      (float) z, 1.0F,        colorR, colorG, colorB, colorA
+        });
     }
 
     @Override
     public void fillQuadBox(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4, double z, double sZ, byte options) {
+        // 0x01: hide back
+        // 0x02: hide front
+        // 0x04: hide bottom
+        // 0x08: hide top
+        // 0x10: hide left
+        // 0x20: hide right
 
+        if ((options & 0x02) == 0) // front
+            fillQuad(x1, y1, x2, y2, x3, y3, x4, y4, z);
+
+        if ((options & 0x01) == 0) // back
+            fillQuad(x1, y1, x2, y2, x3, y3, x4, y4, z+sZ);
+
+        if ((options & 0x04) == 0) // bottom
+            metal.draw(ctx, MetalConstants.PRIMITIVE_TRIANGLE, new float[] {
+                    // Triangle 1
+                    (float) x4, (float) y4, (float) z,          colorR, colorG, colorB, colorA,
+                    (float) x4, (float) y4, (float) (z+sZ),     colorR, colorG, colorB, colorA,
+                    (float) x3, (float) y3, (float) z,          colorR, colorG, colorB, colorA,
+
+                    // Triangle 2
+                    (float) x4, (float) y4, (float) (z+sZ),     colorR, colorG, colorB, colorA,
+                    (float) x3, (float) y3, (float) (z+sZ),     colorR, colorG, colorB, colorA,
+                    (float) x3, (float) y3, (float) z,          colorR, colorG, colorB, colorA
+            });
+
+        if ((options & 0x08) == 0) // top
+            metal.draw(ctx, MetalConstants.PRIMITIVE_TRIANGLE, new float[] {
+                    // Triangle 1
+                    (float) x1, (float) y1, (float) z,          colorR, colorG, colorB, colorA,
+                    (float) x1, (float) y1, (float) (z+sZ),     colorR, colorG, colorB, colorA,
+                    (float) x2, (float) y2, (float) z,          colorR, colorG, colorB, colorA,
+
+                    // Triangle 2
+                    (float) x1, (float) y1, (float) (z+sZ),     colorR, colorG, colorB, colorA,
+                    (float) x2, (float) y2, (float) (z+sZ),     colorR, colorG, colorB, colorA,
+                    (float) x2, (float) y2, (float) z,          colorR, colorG, colorB, colorA
+            });
+
+        if ((options & 0x10) == 0) // left
+            metal.draw(ctx, MetalConstants.PRIMITIVE_TRIANGLE, new float[] {
+                    // Triangle 1
+                    (float) x4, (float) y4, (float) z,          colorR, colorG, colorB, colorA,
+                    (float) x4, (float) y4, (float) (z+sZ),     colorR, colorG, colorB, colorA,
+                    (float) x1, (float) y1, (float) z,          colorR, colorG, colorB, colorA,
+
+                    // Triangle 2
+                    (float) x4, (float) y4, (float) (z+sZ),     colorR, colorG, colorB, colorA,
+                    (float) x1, (float) y1, (float) (z+sZ),     colorR, colorG, colorB, colorA,
+                    (float) x1, (float) y1, (float) z,          colorR, colorG, colorB, colorA
+            });
+
+        if ((options & 0x20) == 0) // right
+            metal.draw(ctx, MetalConstants.PRIMITIVE_TRIANGLE, new float[] {
+                    // Triangle 1
+                    (float) x3, (float) y3, (float) z,          colorR, colorG, colorB, colorA,
+                    (float) x2, (float) y2, (float) (z+sZ),     colorR, colorG, colorB, colorA,
+                    (float) x2, (float) y2, (float) z,          colorR, colorG, colorB, colorA,
+
+                    // Triangle 2
+                    (float) x3, (float) y3, (float) (z+sZ),     colorR, colorG, colorB, colorA,
+                    (float) x2, (float) y2, (float) (z+sZ),     colorR, colorG, colorB, colorA,
+                    (float) x2, (float) y2, (float) z,          colorR, colorG, colorB, colorA
+            });
     }
 
     @Override
