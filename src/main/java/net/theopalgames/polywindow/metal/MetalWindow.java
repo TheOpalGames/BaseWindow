@@ -175,59 +175,65 @@ public class MetalWindow extends BaseWindow {
         if ((options & 0x04) == 0) // bottom
             metal.draw(ctx, MetalConstants.PRIMITIVE_TRIANGLE, new float[] {
                     // Triangle 1
-                    (float) x4, (float) y4, (float) z,          colorR, colorG, colorB, colorA,
-                    (float) x4, (float) y4, (float) (z+sZ),     colorR, colorG, colorB, colorA,
-                    (float) x3, (float) y3, (float) z,          colorR, colorG, colorB, colorA,
+                    (float) x4, (float) y4, (float) z,      1.0F,    colorR, colorG, colorB, colorA,
+                    (float) x4, (float) y4, (float) (z+sZ), 1.0F,    colorR, colorG, colorB, colorA,
+                    (float) x3, (float) y3, (float) z,      1.0F,    colorR, colorG, colorB, colorA,
 
                     // Triangle 2
-                    (float) x4, (float) y4, (float) (z+sZ),     colorR, colorG, colorB, colorA,
-                    (float) x3, (float) y3, (float) (z+sZ),     colorR, colorG, colorB, colorA,
-                    (float) x3, (float) y3, (float) z,          colorR, colorG, colorB, colorA
+                    (float) x4, (float) y4, (float) (z+sZ), 1.0F,    colorR, colorG, colorB, colorA,
+                    (float) x3, (float) y3, (float) (z+sZ), 1.0F,    colorR, colorG, colorB, colorA,
+                    (float) x3, (float) y3, (float) z,      1.0F,    colorR, colorG, colorB, colorA
             });
 
         if ((options & 0x08) == 0) // top
             metal.draw(ctx, MetalConstants.PRIMITIVE_TRIANGLE, new float[] {
                     // Triangle 1
-                    (float) x1, (float) y1, (float) z,          colorR, colorG, colorB, colorA,
-                    (float) x1, (float) y1, (float) (z+sZ),     colorR, colorG, colorB, colorA,
-                    (float) x2, (float) y2, (float) z,          colorR, colorG, colorB, colorA,
+                    (float) x1, (float) y1, (float) z,      1.0F,    colorR, colorG, colorB, colorA,
+                    (float) x1, (float) y1, (float) (z+sZ), 1.0F,    colorR, colorG, colorB, colorA,
+                    (float) x2, (float) y2, (float) z,      1.0F,    colorR, colorG, colorB, colorA,
 
                     // Triangle 2
-                    (float) x1, (float) y1, (float) (z+sZ),     colorR, colorG, colorB, colorA,
-                    (float) x2, (float) y2, (float) (z+sZ),     colorR, colorG, colorB, colorA,
-                    (float) x2, (float) y2, (float) z,          colorR, colorG, colorB, colorA
+                    (float) x1, (float) y1, (float) (z+sZ), 1.0F,    colorR, colorG, colorB, colorA,
+                    (float) x2, (float) y2, (float) (z+sZ), 1.0F,    colorR, colorG, colorB, colorA,
+                    (float) x2, (float) y2, (float) z,      1.0F,    colorR, colorG, colorB, colorA
             });
 
         if ((options & 0x10) == 0) // left
             metal.draw(ctx, MetalConstants.PRIMITIVE_TRIANGLE, new float[] {
                     // Triangle 1
-                    (float) x4, (float) y4, (float) z,          colorR, colorG, colorB, colorA,
-                    (float) x4, (float) y4, (float) (z+sZ),     colorR, colorG, colorB, colorA,
-                    (float) x1, (float) y1, (float) z,          colorR, colorG, colorB, colorA,
+                    (float) x4, (float) y4, (float) z,      1.0F,     colorR, colorG, colorB, colorA,
+                    (float) x4, (float) y4, (float) (z+sZ), 1.0F,     colorR, colorG, colorB, colorA,
+                    (float) x1, (float) y1, (float) z,      1.0F,     colorR, colorG, colorB, colorA,
 
                     // Triangle 2
-                    (float) x4, (float) y4, (float) (z+sZ),     colorR, colorG, colorB, colorA,
-                    (float) x1, (float) y1, (float) (z+sZ),     colorR, colorG, colorB, colorA,
-                    (float) x1, (float) y1, (float) z,          colorR, colorG, colorB, colorA
+                    (float) x4, (float) y4, (float) (z+sZ), 1.0F,     colorR, colorG, colorB, colorA,
+                    (float) x1, (float) y1, (float) (z+sZ), 1.0F,     colorR, colorG, colorB, colorA,
+                    (float) x1, (float) y1, (float) z,      1.0F,     colorR, colorG, colorB, colorA
             });
 
         if ((options & 0x20) == 0) // right
             metal.draw(ctx, MetalConstants.PRIMITIVE_TRIANGLE, new float[] {
                     // Triangle 1
-                    (float) x3, (float) y3, (float) z,          colorR, colorG, colorB, colorA,
-                    (float) x2, (float) y2, (float) (z+sZ),     colorR, colorG, colorB, colorA,
-                    (float) x2, (float) y2, (float) z,          colorR, colorG, colorB, colorA,
+                    (float) x3, (float) y3, (float) z,      1.0F,       colorR, colorG, colorB, colorA,
+                    (float) x2, (float) y2, (float) (z+sZ), 1.0F,       colorR, colorG, colorB, colorA,
+                    (float) x2, (float) y2, (float) z,      1.0F,       colorR, colorG, colorB, colorA,
 
                     // Triangle 2
-                    (float) x3, (float) y3, (float) (z+sZ),     colorR, colorG, colorB, colorA,
-                    (float) x2, (float) y2, (float) (z+sZ),     colorR, colorG, colorB, colorA,
-                    (float) x2, (float) y2, (float) z,          colorR, colorG, colorB, colorA
+                    (float) x3, (float) y3, (float) (z+sZ), 1.0F,       colorR, colorG, colorB, colorA,
+                    (float) x2, (float) y2, (float) (z+sZ), 1.0F,       colorR, colorG, colorB, colorA,
+                    (float) x2, (float) y2, (float) z,      1.0F,       colorR, colorG, colorB, colorA
             });
     }
 
     @Override
     public void drawRect(double x, double y, double sX, double sY) {
-
+        metal.draw(ctx, MetalConstants.PRIMITIVE_LINE_STRIP, new float[] {
+                (float) x,      (float) y,      0.0F, 1.0F,       colorR, colorG, colorB, colorA,
+                (float) (x+sX), (float) y,      0.0F, 1.0F,       colorR, colorG, colorB, colorA,
+                (float) (x+sX), (float) (y+sY), 0.0F, 1.0F,       colorR, colorG, colorB, colorA,
+                (float) x,      (float) (y+sY), 0.0F, 1.0F,       colorR, colorG, colorB, colorA,
+                (float) x,      (float) y,      0.0F, 1.0F,       colorR, colorG, colorB, colorA // closed loop
+        });
     }
 
     @Override
