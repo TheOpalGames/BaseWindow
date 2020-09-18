@@ -29,7 +29,7 @@
 //    currentCtx = [[NSMutableDictionary alloc] init];
 //}
 
-static void unused(int a, ...) {
+static void unused(char a, ...) {
     // NOOP, just to get rid of compiler warnings.
 }
 
