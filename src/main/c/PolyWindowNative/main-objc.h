@@ -2,6 +2,12 @@
 #define main_h
 
 @import Metal;
+@import QuartzCore;
+
+#import <Cocoa/Cocoa.h>
+#import "AppDelegate.h"
+
+#define INIT_KEY @"polywindowEnvInit"
 
 @interface PolyWindowContext:NSObject {
     
@@ -10,12 +16,15 @@
 @property(nonatomic) id<MTLDevice> device;
 @property(nonatomic) id<MTLLibrary> library;
 @property(nonatomic) id<MTLCommandQueue> commands;
-@property(nonatomic) id<CAMetalLayer> metalLayer;
+@property(nonatomic) CAMetalLayer *metalLayer;
+@property(nonatomic) AppDelegate *appDelegate;
+
+-(void) postInit;
 
 @end
 
 
-
-PolyWindowContext *init(void);
+//void init(void);
+void newCtx(void *);
 
 #endif /* main_h */
