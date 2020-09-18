@@ -4,6 +4,8 @@
 @interface AppDelegate ()
 
 @property (weak) IBOutlet NSWindow *window;
+@property (weak) IBOutlet NSView *mainView;
+
 @property PolyWindowContext *ctx;
 
 @end
@@ -21,6 +23,14 @@
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
+}
+
+- (NSWindow *) getWindow {
+    return self.window;
+}
+
+- (NSView *) getMainView {
+    return self.view;
 }
 
 
