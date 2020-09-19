@@ -1,10 +1,12 @@
 #import "AppDelegate.h"
+#import "ViewController.h"
 #import "main-objc.h"
 
 @interface AppDelegate ()
 
 @property (weak) IBOutlet NSWindow *window;
 @property (weak) IBOutlet NSView *mainView;
+@property (weak) IBOutlet ViewController *viewController;
 
 @property PolyWindowContext *ctx;
 
@@ -17,6 +19,8 @@
     [[NSThread currentThread] threadDictionary][INIT_KEY] = nil;
     
     self.ctx.appDelegate = self;
+    self.viewController.ctx = self.ctx;
+    
     [self.ctx postInit];
 }
 
@@ -30,8 +34,7 @@
 }
 
 - (NSView *) getMainView {
-    return self.view;
+    return self.mainView;
 }
-
 
 @end
