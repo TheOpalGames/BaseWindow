@@ -20,8 +20,9 @@
 @property(nonatomic) AppDelegate *appDelegate;
 @property(nonatomic) void *cppCtx;
 @property(nonatomic) id<MTLRenderPipelineState> pipelineState;
+@property(nonatomic) id<MTLRenderCommandEncoder> renderEncoder;
 
--(id) init:(void *)env;
+-(id) init:(void *)cppCtx;
 -(void) postInit;
 
 @end

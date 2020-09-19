@@ -37,7 +37,24 @@ CVReturn drawNextFrame(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow, c
 }
 
 -(void) drawNextFrame {
+    id<CAMetalDrawable> drawable = [self.ctx.metalLayer nextDrawable];
+    
+    MTLRenderPassDescriptor *desc = [MTLRenderPassDescriptor renderPassDescriptor];
+    desc.colorAttachments[0].texture = drawable.texture;
+    desc.colorAttachments[0].loadAction = MTLLoadActionClear;
+    desc.colorAttachments[0].clearColor = MTLClearColorMake(1, 1, 1, 1);
+    desc.colorAttachments[0].storeAction = MTLStoreActionStore;
+    
+    id<MTLCommandBuffer> commands = [self.ctx.commands commandBuffer];
+    id<MTLRenderCommandEncoder> renderEncoder = [commands renderCommandEncoderWithDescriptor:desc];
+    self.ctx.renderEncoder = renderEncoder;
+    
     callbackFunction(self.ctx.cppCtx, "drawFrame");
+    
+    [renderEncoder endEncoding];
+    
+    [commands presentDrawable:drawable];
+    [commands commit];
 }
 
 -(void) dealloc {

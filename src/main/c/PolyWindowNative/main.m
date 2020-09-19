@@ -2,9 +2,9 @@
 
 @implementation PolyWindowContext
 
--(id)init:(void *)env {
+-(id)init:(void *)cppCtx {
     self = [super init];
-    self.env = env;
+    self.cppCtx = cppCtx;
     
     [[NSThread currentThread] threadDictionary][INIT_KEY] = self;
     
@@ -42,30 +42,15 @@ static void unused(char a, ...) {
     // NOOP, just to get rid of compiler warnings.
 }
 
-void newCtx(void *env) {
-    PolyWindowContext *ctx = [[PolyWindowContext alloc] init];
+void newCtx(void *cppCtx) {
+    PolyWindowContext *ctx = [[PolyWindowContext alloc] init:cppCtx];
     unused(0, ctx);
 }
 
 void draw(PolyWindowContext *ctx, int primitive, int nVertices, float vertexData[]) {
     id<MTLBuffer> vertexBuffer = [ctx.device newBufferWithBytes:vertexData length:nVertices options:MTLResourceOptionCPUCacheModeDefault];
     
-    id<CAMetalDrawable> drawable = [ctx.metalLayer nextDrawable];
-    
-    
-    
-    MTLRenderPassDescriptor *desc = [MTLRenderPassDescriptor renderPassDescriptor];
-    desc.colorAttachments[0].texture = drawable.texture;
-    desc.colorAttachments[0].loadAction = MTLLoadActionClear;
-    desc.colorAttachments[0].clearColor = MTLClearColorMake(1, 1, 1, 1);
-    desc.colorAttachments[0].storeAction = MTLStoreActionStore;
-    
-    id<MTLCommandBuffer> commands = [ctx.commands commandBuffer];
-    id<MTLRenderCommandEncoder> renderEncoder = [commands renderCommandEncoderWithDescriptor:desc];
-    
-    [renderEncoder setRenderPipelineState:ctx.pipelineState];
-    [renderEncoder setVertexBuffer:vertexBuffer offset:0 atIndex:0];
-    [renderEncoder drawPrimitives:primitive vertexStart:0 vertexCount:nVertices];
-    
-    [renderEncoder endEncoding]; // TODO: Allow chaining of this via an outer draw event function.
+    [ctx.renderEncoder setRenderPipelineState:ctx.pipelineState];
+    [ctx.renderEncoder setVertexBuffer:vertexBuffer offset:0 atIndex:0];
+    [ctx.renderEncoder drawPrimitives:primitive vertexStart:0 vertexCount:nVertices];
 }
