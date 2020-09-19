@@ -38,6 +38,7 @@ public class MetalWindow extends BaseWindow {
 
     private MetalNative metal;
     private long ctx;
+    private MetalCallbacks callbacks; // only to prevent GC.
 
     private float colorR;
     private float colorG;
@@ -57,7 +58,9 @@ public class MetalWindow extends BaseWindow {
         }
 
         metal = new MetalNative();
-        ctx = metal.init();
+
+        callbacks = new MetalCallbacks(this);
+        ctx = metal.init(callbacks);
     }
 
     @Override
@@ -67,7 +70,7 @@ public class MetalWindow extends BaseWindow {
 
     @Override
     public void setIcon(String icon) {
-
+                // why is this here anyway? It's useless. Window icons don't exist.
     }
 
     @Override
@@ -374,5 +377,14 @@ public class MetalWindow extends BaseWindow {
     @Override
     public Framework getFramework() {
         return Framework.METAL;
+    }
+
+    void drawFrame() {
+        updater.update();
+        drawer.draw();
+    }
+
+    void onClose() {
+        windowHandler.onWindowClose();
     }
 }

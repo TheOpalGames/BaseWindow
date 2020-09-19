@@ -18,7 +18,7 @@
 @property(nonatomic) id<MTLCommandQueue> commands;
 @property(nonatomic) CAMetalLayer *metalLayer;
 @property(nonatomic) AppDelegate *appDelegate;
-@property(nonatomic) void *env;
+@property(nonatomic) void *cppCtx;
 @property(nonatomic) id<MTLRenderPipelineState> pipelineState;
 
 -(id) init:(void *)env;

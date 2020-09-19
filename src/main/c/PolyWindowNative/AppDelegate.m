@@ -1,6 +1,7 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import "main-objc.h"
+#import "jni-interface-objc.h"
 
 @interface AppDelegate ()
 
@@ -14,7 +15,7 @@
 
 @implementation AppDelegate
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+- (void) applicationDidFinishLaunching:(NSNotification *)aNotification {
     self.ctx = (PolyWindowContext *) [[NSThread currentThread] threadDictionary][INIT_KEY];
     [[NSThread currentThread] threadDictionary][INIT_KEY] = nil;
     
@@ -26,7 +27,7 @@
 
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-    // Insert code here to tear down your application
+    callbackFunction(self.ctx.cppCtx, "appClosed");
 }
 
 - (NSWindow *) getWindow {

@@ -37,7 +37,7 @@ CVReturn drawNextFrame(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow, c
 }
 
 -(void) drawNextFrame {
-    drawFrame(self.ctx.env);
+    callbackFunction(self.ctx.cppCtx, "drawFrame");
 }
 
 -(void) dealloc {
