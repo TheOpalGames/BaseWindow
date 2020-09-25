@@ -2,11 +2,14 @@ package net.theopalgames.polywindow.swing;
 
 import net.theopalgames.polywindow.*;
 import net.theopalgames.polywindow.swing.input.InputKeyboard;
+import net.theopalgames.polywindow.transformation.Transformation;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class SwingWindow extends BaseWindow
 {
@@ -170,23 +173,23 @@ public class SwingWindow extends BaseWindow
         throw new UnsupportedOperationException("The Swing renderer does not support 3D!");
     }
 
-    @Override
-    public void setUpPerspective()
-    {
-        throw new UnsupportedOperationException("The Swing renderer does not support 3D!");
-    }
-
-    @Override
-    public void applyTransformations()
-    {
-        throw new UnsupportedOperationException("The Swing renderer does not support 3D!");
-    }
-
-    @Override
-    public void loadPerspective()
-    {
-        throw new UnsupportedOperationException("The Swing renderer does not support 3D!");
-    }
+//    @Override
+//    public void setUpPerspective()
+//    {
+//        throw new UnsupportedOperationException("The Swing renderer does not support 3D!");
+//    }
+//
+//    @Override
+//    public void applyTransformations()
+//    {
+//        throw new UnsupportedOperationException("The Swing renderer does not support 3D!");
+//    }
+//
+//    @Override
+//    public void loadPerspective()
+//    {
+//        throw new UnsupportedOperationException("The Swing renderer does not support 3D!");
+//    }
 
     @Override
     public void drawImage(double x, double y, double sX, double sY, double u1, double v1, double u2, double v2, String image, boolean scaled)
@@ -318,6 +321,11 @@ public class SwingWindow extends BaseWindow
     public void addVertex(double x, double y)
     {
 
+    }
+
+    @Override
+    public List<Transformation> getTransformations() {
+        return Collections.emptyList(); // Swing does not support transformations.
     }
 
     @Override

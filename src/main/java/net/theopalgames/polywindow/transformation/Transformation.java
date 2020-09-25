@@ -2,6 +2,8 @@ package net.theopalgames.polywindow.transformation;
 
 import net.theopalgames.polywindow.BaseWindow;
 
+import java.util.function.Consumer;
+
 public abstract class Transformation
 {
     public BaseWindow window;
@@ -11,5 +13,5 @@ public abstract class Transformation
         this.window = window;
     }
 
-    public abstract void apply();
+    public abstract void addMatrices(Consumer<double[]> registry);
 }

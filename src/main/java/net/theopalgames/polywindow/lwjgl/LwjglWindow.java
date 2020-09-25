@@ -4,6 +4,7 @@ import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import net.theopalgames.polywindow.*;
 import net.theopalgames.polywindow.transformation.Rotation;
+import net.theopalgames.polywindow.transformation.Transformation;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWImage;
@@ -18,6 +19,7 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
@@ -46,6 +48,8 @@ public class LwjglWindow extends BaseWindow
     protected HashMap<String, Integer> textureSY = new HashMap<String, Integer>();
 
     public boolean batchMode = false;
+
+    private List<Transformation> transformations = new ArrayList<Transformation>();
 
     public LwjglWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse)
     {
@@ -1242,6 +1246,11 @@ public class LwjglWindow extends BaseWindow
     public void addVertex(double x, double y)
     {
         glVertex2d(x, y);
+    }
+
+    @Override
+    public List<Transformation> getTransformations() {
+        return transformations;
     }
 
     @Override

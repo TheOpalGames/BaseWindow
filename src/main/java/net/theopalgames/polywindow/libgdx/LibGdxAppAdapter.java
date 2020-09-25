@@ -67,6 +67,8 @@ public class LibGdxAppAdapter extends ApplicationAdapter {
 //        if (Gdx.app.getType() == Application.ApplicationType.Android)
 //            keyboardHeightListener.init();
         // TODO: Keyboard height listener
+
+        window.run();
     }
 
     @Override

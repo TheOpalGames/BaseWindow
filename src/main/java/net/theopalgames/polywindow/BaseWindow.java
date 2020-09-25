@@ -6,6 +6,7 @@ import net.theopalgames.polywindow.transformation.Translation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class BaseWindow
 {
@@ -57,8 +58,6 @@ public abstract class BaseWindow
     public IDrawer drawer;
     public IUpdater updater;
     public IWindowHandler windowHandler;
-
-    public ArrayList<Transformation> transformations = new ArrayList<Transformation>();
 
     public double yaw = 0;
     public double pitch = 0;
@@ -151,7 +150,7 @@ public abstract class BaseWindow
         //frameFrequency = freq;
     }
 
-    public abstract void run();
+    protected abstract void run();
 
     public abstract void setShowCursor(boolean show);
 
@@ -194,11 +193,11 @@ public abstract class BaseWindow
 
     public abstract void drawRect(double x, double y, double sX, double sY);
 
-    public abstract void setUpPerspective();
+//    public abstract void setUpPerspective();
 
-    public abstract void applyTransformations();
+//    public abstract void applyTransformations();
 
-    public abstract void loadPerspective();
+//    public abstract void loadPerspective();
 
     public abstract void drawImage(double x, double y, double sX, double sY, String image, boolean scaled);
 
@@ -247,6 +246,8 @@ public abstract class BaseWindow
     public abstract void addVertex(double x, double y, double z);
 
     public abstract void addVertex(double x, double y);
+
+    public abstract List<Transformation> getTransformations();
 
     public void setupKeyCodes()
     {

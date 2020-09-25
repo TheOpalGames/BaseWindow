@@ -10,9 +10,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer20;
 import com.badlogic.gdx.math.Matrix4;
 import net.theopalgames.polywindow.*;
+import net.theopalgames.polywindow.transformation.Transformation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.badlogic.gdx.Input.Keys.*;
@@ -61,6 +63,8 @@ public class LibGdxWindow extends BaseWindow
     public float qx3;
     public float qy3;
     public float qz3;
+
+    private List<Transformation> transformations;
 
 
     public LibGdxWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse)
@@ -953,23 +957,23 @@ public class LibGdxWindow extends BaseWindow
         drawImage(x, y, z, sX, sY, 0, 0, 1, 1, image, scaled, true);
     }
 
-    @Override
-    public void setUpPerspective()
-    {
-
-    }
-
-    @Override
-    public void applyTransformations()
-    {
-
-    }
-
-    @Override
-    public void loadPerspective()
-    {
-
-    }
+//    @Override
+//    public void setUpPerspective()
+//    {
+//
+//    }
+//
+//    @Override
+//    public void applyTransformations()
+//    {
+//
+//    }
+//
+//    @Override
+//    public void loadPerspective()
+//    {
+//
+//    }
 
     @Override
     public void drawImage(double x, double y, double sX, double sY, double u1, double v1, double u2, double v2, String image, boolean scaled)
@@ -1249,6 +1253,11 @@ public class LibGdxWindow extends BaseWindow
 
         spriteBatch.setColor(this.colorR, this.colorG, this.colorB, this.colorA);
         spriteBatch.draw(texture, (float) x, (float) y, (float) width, (float) height, (float) u1, (float) v1, (float) u2, (float) v2);
+    }
+
+    @Override
+    public List<Transformation> getTransformations() {
+        return transformations;
     }
 
     @Override

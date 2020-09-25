@@ -7,6 +7,10 @@ public class MetalCallbacks {
         this.window = window;
     }
 
+    public void finishInit(long ctx) {
+        window.finishInit(ctx);
+    }
+
     public void drawFrame() {
         window.drawFrame();
     }

@@ -3,12 +3,14 @@ package net.theopalgames.polywindow.metal;
 import net.theopalgames.polywindow.BaseWindow;
 import net.theopalgames.polywindow.Framework;
 import net.theopalgames.polywindow.Game;
+import net.theopalgames.polywindow.transformation.Transformation;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MetalWindow extends BaseWindow {
     private static boolean loaded;
@@ -45,6 +47,8 @@ public class MetalWindow extends BaseWindow {
     private float colorB;
     private float colorA;
 
+    private List<Transformation> transformations;
+
     public MetalWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse) {
         super(game, name, x, y, z, vsync, showMouse);
     }
@@ -60,7 +64,12 @@ public class MetalWindow extends BaseWindow {
         metal = new MetalNative();
 
         callbacks = new MetalCallbacks(this);
-        ctx = metal.init(callbacks);
+        metal.init(callbacks);
+    }
+
+    void finishInit(long ctx) {
+        this.ctx = ctx;
+        this.transformations = new MetalTransformationList(ctx, metal);
     }
 
     @Override
@@ -239,20 +248,21 @@ public class MetalWindow extends BaseWindow {
         });
     }
 
-    @Override
-    public void setUpPerspective() {
-
-    }
-
-    @Override
-    public void applyTransformations() {
-
-    }
-
-    @Override
-    public void loadPerspective() {
-
-    }
+//    @Override
+//    public void setUpPerspective() {
+//
+//    }
+//
+//    @Override
+//    public void applyTransformations() {
+//        for (int i = transformations.size()-1; i >= 0; i--)
+//            transformations.get(i).apply();
+//    }
+//
+//    @Override
+//    public void loadPerspective() {
+//
+//    }
 
     @Override
     public void drawImage(double x, double y, double sX, double sY, String image, boolean scaled) {
@@ -372,6 +382,11 @@ public class MetalWindow extends BaseWindow {
     @Override
     public void addVertex(double x, double y) {
 
+    }
+
+    @Override
+    public List<Transformation> getTransformations() {
+        return transformations;
     }
 
     @Override

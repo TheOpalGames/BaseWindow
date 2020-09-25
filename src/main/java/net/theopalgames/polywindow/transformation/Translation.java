@@ -2,6 +2,8 @@ package net.theopalgames.polywindow.transformation;
 
 import net.theopalgames.polywindow.BaseWindow;
 
+import java.util.function.Consumer;
+
 public class Translation extends Transformation
 {
     public double x;
@@ -16,16 +18,19 @@ public class Translation extends Transformation
         this.z = z;
     }
 
-    public void apply()
+    @Override
+    public void addMatrices(Consumer<double[]> registry)
     {
-        window.xOffset += x;
-        window.yOffset += y;
-        window.zOffset += z;
-        transform(window, x, y, z);
+        // TODO
+//        window.xOffset += x;
+//        window.yOffset += y;
+//        window.zOffset += z;
+//        transform(window, x, y, z);
+        registry.accept(new double[] {1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  x * window.absoluteWidth, y * window.absoluteHeight, z * window.absoluteDepth, 1});
     }
 
-    public static void transform(BaseWindow window, double x, double y, double z)
-    {
-        window.transform(new double[]{1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  x * window.absoluteWidth, y * window.absoluteHeight, z * window.absoluteDepth, 1});
-    }
+//    public static void transform(BaseWindow window, double x, double y, double z)
+//    {
+//        window.transform(new double[]{1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  x * window.absoluteWidth, y * window.absoluteHeight, z * window.absoluteDepth, 1});
+//    }
 }

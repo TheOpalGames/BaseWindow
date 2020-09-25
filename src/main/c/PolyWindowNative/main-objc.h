@@ -22,6 +22,9 @@
 @property(nonatomic) id<MTLRenderPipelineState> pipelineState;
 @property(nonatomic) id<MTLRenderCommandEncoder> renderEncoder;
 
+@property(nonatomic) id<MTLBuffer> uniformBuffer;
+@property(nonatomic) bool hasTransformations;
+
 -(id) init:(void *)cppCtx;
 -(void) postInit;
 
@@ -30,5 +33,7 @@
 
 //void init(void);
 void newCtx(void *);
+void draw(PolyWindowContext *ctx, int primitive, int nVertices, float vertexData[]);
+void replaceMatrices(PolyWindowContext *ctx, int nMatrices, double **matrices);
 
 #endif /* main_h */
