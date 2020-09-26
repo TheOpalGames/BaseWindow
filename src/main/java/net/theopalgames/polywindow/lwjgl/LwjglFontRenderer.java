@@ -15,7 +15,7 @@ public class LwjglFontRenderer extends BaseFontRenderer
 	//spacing between rows, increase this to 2 for antialiasing to prevent weird artifacts
 	public int hSpace = 2;
 
-	public LwjglFontRenderer(LWJGLWindow h, String fontFile)
+	public LwjglFontRenderer(LwjglWindow h, String fontFile)
 	{
 		super(h);
 		this.chars = " !\"#$%&'()*+,-./" +

@@ -420,7 +420,7 @@ public class LwjglWindow extends BaseWindow
 
         loadPerspective();
         glTranslated(x, y, z);
-        Rotation.transform(this, -this.yaw, -this.pitch, -this.roll);
+        new Rotation(this, -yaw, -pitch, -roll).addMatrices(this::transform);
 
         glBegin(GL_TRIANGLE_FAN);
         for (double i = 0; i < Math.PI * 2; i += Math.PI * 2 / sides)
@@ -456,7 +456,7 @@ public class LwjglWindow extends BaseWindow
 
         loadPerspective();
         glTranslated(x, y, z);
-        Rotation.transform(this, -this.yaw, -this.pitch, -this.roll);
+        new Rotation(this, -this.yaw, -this.pitch, -this.roll).addMatrices(this::transform);
 
         glBegin(GL_TRIANGLES);
         double step = Math.PI * 2 / sides;
@@ -887,7 +887,7 @@ public class LwjglWindow extends BaseWindow
 
         for (int i = this.transformations.size() - 1; i >= 0; i--)
         {
-            this.transformations.get(i).apply();
+            transformations.get(i).addMatrices(this::transform);
         }
 
         //glTranslated(absoluteWidth * (-0.5 + xOffset), absoluteHeight * (-0.5 + yOffset), absoluteDepth * zOffset);
@@ -898,7 +898,7 @@ public class LwjglWindow extends BaseWindow
     {
         setUpPerspective();
         applyTransformations();
-        this.baseTransformation.apply();
+        this.baseTransformation.addMatrices(this::transform);
     }
 
     public void drawImage(double x, double y, double sX, double sY, String image, boolean scaled)
