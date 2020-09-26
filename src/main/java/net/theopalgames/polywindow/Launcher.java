@@ -30,15 +30,19 @@ public class Launcher {
     }
 
     public static Game createGame(BaseFileManager files) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+        String gameLocation;
+
         try (InputStream data = files.getInternalFileContents("META-INF/MANIFEST.MF")) {
             Manifest manifest = new Manifest(data);
-
-            String gameLocation = manifest.getMainAttributes().getValue("Game-Class");
-            if (gameLocation == null)
-                throw new IllegalStateException("No Game class found!");
-
-            Class<? extends Game> clazz = (Class<? extends Game>) Class.forName(gameLocation);
-            return clazz.newInstance();
+            gameLocation = manifest.getMainAttributes().getValue("Game-Class");
         }
+
+        if (gameLocation == null)
+            throw new IllegalStateException("No Game class found!");
+
+        Class<? extends Game> clazz = (Class<? extends Game>) Class.forName(gameLocation);
+        Game game = clazz.newInstance();
+        game.preInit(files);
+        return game;
     }
 }
