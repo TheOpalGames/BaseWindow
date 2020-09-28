@@ -16,6 +16,10 @@ public class MetalCallbacks {
     }
 
     public void appClosed() {
-        window.onClose();
+        try {
+            window.onClose();
+        } catch (Throwable e) {
+            window.getGame().onError(e);
+        }
     }
 }

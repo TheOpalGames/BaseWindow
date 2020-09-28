@@ -89,7 +89,7 @@ public class LibGdxAppAdapter extends ApplicationAdapter {
     public void dispose()
     {
 //        Game.game.window.windowHandler.onWindowClose();
-        // TODO: Tanks
+        window.windowHandler.onWindowClose();
     }
 
     @Override

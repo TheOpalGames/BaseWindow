@@ -1,19 +1,27 @@
 package net.theopalgames.polywindow.metal;
 
+import de.matthiasmann.twl.utils.PNGDecoder;
 import net.theopalgames.polywindow.BaseWindow;
 import net.theopalgames.polywindow.Framework;
 import net.theopalgames.polywindow.Game;
+import net.theopalgames.polywindow.transformation.RotationAboutPoint;
 import net.theopalgames.polywindow.transformation.Transformation;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MetalWindow extends BaseWindow {
     private static boolean loaded;
+    private static Field byteBufAddr;
 
     private static synchronized void loadNative() throws IOException {
         if (loaded)
@@ -49,8 +57,14 @@ public class MetalWindow extends BaseWindow {
 
     private List<Transformation> transformations;
 
+    private Map<String, Long> textures = new HashMap<>();
+
     public MetalWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse) {
         super(game, name, x, y, z, vsync, showMouse);
+    }
+
+    Game getGame() {
+        return game;
     }
 
     @Override
@@ -266,52 +280,99 @@ public class MetalWindow extends BaseWindow {
 
     @Override
     public void drawImage(double x, double y, double sX, double sY, String image, boolean scaled) {
-
+        drawImage(x, y, 0, sX, sY, image, scaled);
     }
 
     @Override
     public void drawImage(double x, double y, double z, double sX, double sY, String image, boolean scaled) {
-
+        drawImage(x, y, z, sX, sY, 0, 0, 1, 1, image, scaled);
     }
 
     @Override
     public void drawImage(double x, double y, double sX, double sY, double u1, double v1, double u2, double v2, String image, boolean scaled) {
-
+        drawImage(x, y, 0, sX, sY, u1, v1, u2, v2, image, scaled);
     }
 
     @Override
     public void drawImage(double x, double y, double z, double sX, double sY, double u1, double v1, double u2, double v2, String image, boolean scaled) {
-
+        drawImage(x, y, z, sX, sY, u1, v1, u2, v2, image, scaled, true);
     }
 
     @Override
     public void drawImage(double x, double y, double z, double sX, double sY, double u1, double v1, double u2, double v2, String image, boolean scaled, boolean depthtest) {
-
+        drawImage(x, y, z, sX, sY, u1, v1, u2, v2, image, 0, scaled, depthtest);
     }
 
     @Override
     public void drawImage(double x, double y, double sX, double sY, String image, double rotation, boolean scaled) {
-
+        drawImage(x, y, 0, sX, sY, image, rotation, scaled);
     }
 
     @Override
     public void drawImage(double x, double y, double z, double sX, double sY, String image, double rotation, boolean scaled) {
-
+        drawImage(x, y, z, sX, sY, 0, 0, 1, 1, image, rotation, scaled);
     }
 
     @Override
     public void drawImage(double x, double y, double sX, double sY, double u1, double v1, double u2, double v2, String image, double rotation, boolean scaled) {
-
+        drawImage(x, y, 0, sX, sY, u1, v1, u2, v2, image, rotation, scaled);
     }
 
     @Override
     public void drawImage(double x, double y, double z, double sX, double sY, double u1, double v1, double u2, double v2, String image, double rotation, boolean scaled) {
-
+        drawImage(x, y, z, sX, sY, u1, v1, u2, v2, image, rotation, scaled, true);
     }
 
     @Override
     public void drawImage(double x, double y, double z, double sX, double sY, double u1, double v1, double u2, double v2, String image, double rotation, boolean scaled, boolean depthtest) {
+        long addr = textures.computeIfAbsent(image, this::createTexture);
+        metal.setTexture(ctx, addr, (float) u1, (float) v1, (float) (u2-u1), (float) (v2-v1));
 
+        if (rotation != 0.0)
+            transformations.add(new RotationAboutPoint(this, 0.0, 0.0, rotation, x + sX/2, y + sY/2, z));
+
+        metal.draw(ctx, MetalConstants.PRIMITIVE_TRIANGLE, new float[] { // 2 triangles
+                // Triangle 1
+                (float) x,           (float) y,           (float) z, 1.0F,        1.0F, 1.0F, 1.0F, 1.0F,
+                (float) (x+sX),      (float) y,           (float) z, 1.0F,        1.0F, 1.0F, 1.0F, 1.0F,
+                (float) (x+sX),      (float) (y+sY),      (float) z, 1.0F,        1.0F, 1.0F, 1.0F, 1.0F,
+
+                // Triangle 2
+                (float) (x+sX),      (float) (y+sY),      (float) z, 1.0F,        1.0F, 1.0F, 1.0F, 1.0F,
+                (float) x,           (float) (y+sY),      (float) z, 1.0F,        1.0F, 1.0F, 1.0F, 1.0F,
+                (float) x,           (float) y,           (float) z, 1.0F,        1.0F, 1.0F, 1.0F, 1.0F
+        });
+
+        if (rotation != 0.0)
+            transformations.remove(transformations.size()-1);
+
+        metal.setTexture(ctx, 0, 0, 0, 0, 0);
+    }
+
+    private long createTexture(String image) {
+        InputStream in = fileManager.getInternalFileContents(image);
+
+        if (in == null)
+            in = fileManager.getInternalFileContents("/missing.png");
+
+        try {
+            PNGDecoder decoder = new PNGDecoder(in);
+            ByteBuffer buf = ByteBuffer.allocateDirect(4*decoder.getWidth()*decoder.getHeight());
+            decoder.decode(buf, decoder.getWidth()*4, PNGDecoder.Format.BGRA);
+
+            return loadAddrField().getLong(buf);
+        } catch (IOException | ReflectiveOperationException e) {
+            throw new RuntimeException("Could not load texture " + image, e);
+        }
+    }
+
+    private static synchronized Field loadAddrField() throws ReflectiveOperationException {
+        if (byteBufAddr != null)
+            return byteBufAddr;
+
+        byteBufAddr = Buffer.class.getDeclaredField("address");
+        byteBufAddr.setAccessible(true);
+        return byteBufAddr;
     }
 
     @Override

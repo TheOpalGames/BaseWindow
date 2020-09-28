@@ -13,6 +13,9 @@ public class Launcher {
         BaseFileManager files = new ComputerFileManager();
         Game game = createGame(files);
 
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name", game.getName());
+
         BaseWindow window;
 
         if (Arrays.asList(args).contains("swing")) {
@@ -43,6 +46,7 @@ public class Launcher {
         Class<? extends Game> clazz = (Class<? extends Game>) Class.forName(gameLocation);
         Game game = clazz.newInstance();
         game.preInit(files);
+
         return game;
     }
 }
