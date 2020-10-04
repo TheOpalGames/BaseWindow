@@ -119,4 +119,6 @@ void toggleVsync(PolyWindowContext *ctx) {
         [[ctx.appDelegate getViewController] enableVsync];
     else
         [[ctx.appDelegate getViewController] enableConstantRefresh];
+    
+    ctx.vsync = !(ctx.vsync);
 }
