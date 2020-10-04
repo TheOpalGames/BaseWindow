@@ -1,4 +1,5 @@
 #import <Cocoa/Cocoa.h>
+#import "ViewController.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
@@ -7,6 +8,7 @@
 
 - (NSWindow *) getWindow;
 - (NSView *) getMainView;
+- (ViewController *) getViewController;
 
 @end
 

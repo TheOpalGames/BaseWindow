@@ -25,6 +25,9 @@
 @property(nonatomic) id<MTLBuffer> uniformBuffer;
 @property(nonatomic) bool hasTransformations;
 
+@property(nonatomic) bool showCursor;
+@property(nonatomic) bool vsync;
+
 -(id) init:(void *)cppCtx;
 -(void) postInit;
 

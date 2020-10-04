@@ -287,7 +287,7 @@ public class SwingWindow extends BaseWindow
         return InputKeyboard.translate(key);
     }
 
-    @Override
+//    @Override
     public void transform(double[] matrix)
     {
         throw new UnsupportedOperationException("The Swing renderer does not support transformations!");

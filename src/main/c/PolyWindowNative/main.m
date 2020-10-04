@@ -34,6 +34,9 @@ typedef struct {
     self.uniformBuffer = [self.device newBufferWithLength:sizeof(Transformation) options:MTLResourceOptionCPUCacheModeDefault];
     self.hasTransformations = false;
     
+    self.showCursor = true;
+    self.vsync = true;
+    
     MTLRenderPipelineDescriptor *desc = [[MTLRenderPipelineDescriptor alloc] init];
     [desc setVertexFunction:[self.library newFunctionWithName:@"vertex_function"]];
     [desc setFragmentFunction:[self.library newFunctionWithName:@"fragment_function"]];
@@ -61,7 +64,7 @@ void draw(PolyWindowContext *ctx, int primitive, int nVertices, float vertexData
     id<MTLBuffer> vertexBuffer = [ctx.device newBufferWithBytes:vertexData length:nVertices options:MTLResourceOptionCPUCacheModeDefault];
     
     [ctx.renderEncoder setRenderPipelineState:ctx.pipelineState];
-    [ctx.renderEncoder setVertexBuffer:vertexBuffer offset:0 atIndex:0];
+    [ctx.renderEncoder setVertexBuffer:vertexBuffer offset:0 atIndex:1];
     [ctx.renderEncoder drawPrimitives:primitive vertexStart:0 vertexCount:nVertices];
 }
 
@@ -98,4 +101,22 @@ void replaceMatrices(PolyWindowContext *ctx, int nMatrices, double **matrices) {
     memcpy([ctx.uniformBuffer contents], &transformation, sizeof(Transformation));
     
     ctx.hasTransformations = true;
+}
+
+void toggleShowCursor(PolyWindowContext *ctx) {
+    if (ctx.showCursor)
+        [NSCursor hide];
+    else
+        [NSCursor unhide];
+    
+    ctx.showCursor = !(ctx.showCursor);
+}
+
+void toggleVsync(PolyWindowContext *ctx) {
+    [[ctx.appDelegate getViewController] disableTimers];
+    
+    if (ctx.vsync)
+        [[ctx.appDelegate getViewController] enableVsync];
+    else
+        [[ctx.appDelegate getViewController] enableConstantRefresh];
 }

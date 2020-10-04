@@ -4,6 +4,7 @@ import de.matthiasmann.twl.utils.PNGDecoder;
 import net.theopalgames.polywindow.BaseWindow;
 import net.theopalgames.polywindow.Framework;
 import net.theopalgames.polywindow.Game;
+import net.theopalgames.polywindow.InputCodes;
 import net.theopalgames.polywindow.transformation.RotationAboutPoint;
 import net.theopalgames.polywindow.transformation.Transformation;
 
@@ -59,8 +60,13 @@ public class MetalWindow extends BaseWindow {
 
     private Map<String, Long> textures = new HashMap<>();
 
+    private boolean vsync;
+    private boolean showMouse;
+
     public MetalWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse) {
         super(game, name, x, y, z, vsync, showMouse);
+        this.vsync = vsync;
+        this.showMouse = showMouse;
     }
 
     Game getGame() {
@@ -78,7 +84,7 @@ public class MetalWindow extends BaseWindow {
         metal = new MetalNative();
 
         callbacks = new MetalCallbacks(this);
-        metal.init(callbacks);
+        metal.init(callbacks, vsync, showMouse);
     }
 
     void finishInit(long ctx) {
@@ -88,7 +94,8 @@ public class MetalWindow extends BaseWindow {
 
     @Override
     public void setShowCursor(boolean show) {
-
+        if (show != showMouse)
+            metal.toggleBoolean(ctx, MetalConstants.PROPERTY_SHOWCURSOR);
     }
 
     @Override
@@ -387,7 +394,8 @@ public class MetalWindow extends BaseWindow {
 
     @Override
     public void setVsync(boolean enable) {
-
+        if (vsync != enable)
+            metal.toggleBoolean(ctx, MetalConstants.PROPERTY_VSYNC);
     }
 
     @Override
@@ -415,10 +423,10 @@ public class MetalWindow extends BaseWindow {
         return 0;
     }
 
-    @Override
-    public void transform(double[] matrix) {
-
-    }
+//    @Override
+//    public void transform(double[] matrix) {
+//
+//    }
 
     @Override
     public double getEdgeBounds() {

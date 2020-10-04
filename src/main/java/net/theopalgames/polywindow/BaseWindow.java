@@ -235,7 +235,7 @@ public abstract class BaseWindow
 
     public abstract int translateTextKey(int key);
 
-    public abstract void transform(double[] matrix);
+//    public abstract void transform(double[] matrix);
 
     public abstract double getEdgeBounds();
 

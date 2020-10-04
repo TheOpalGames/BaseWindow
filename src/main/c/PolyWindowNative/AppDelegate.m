@@ -38,4 +38,8 @@
     return self.mainView;
 }
 
+-(NSViewController *) getViewController {
+    return self.viewController;
+}
+
 @end

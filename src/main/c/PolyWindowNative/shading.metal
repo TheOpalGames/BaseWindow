@@ -16,7 +16,7 @@ typedef struct {
     half4 color;
 } VertexOut;
 
-vertex VertexOut vertex_function(device VertexIn *vertices [[buffer(0)]], constant Transformation &transformation [[buffer(1)]], uint index [[vertex_id]]) {
+vertex VertexOut vertex_function(device VertexIn *vertices [[buffer(1)]], constant Transformation &transformation [[buffer(0)]], uint index [[vertex_id]]) {
     VertexOut ret;
     ret.position = transformation.matrix * vertices[index].position; // with GPU efficiency
     ret.color = half4(vertices[index].color);

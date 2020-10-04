@@ -3,7 +3,8 @@
 
 @interface ViewController()
 
-@property(nonatomic) CVDisplayLinkRef timer;
+@property(nonatomic) CVDisplayLinkRef vsyncTimer;
+@property(nonatomic) NSTimer *constantRefreshTimer;
 
 //-(CVReturn) drawFrame:(CVDisplayLinkRef) timer (const CVTimeStamp *) inNow, (const CVTimeStamp *) inOutputTime, (CVOptionFlags) flagsIn, (CVOptionFlags *) flagsOut;
 
@@ -24,16 +25,43 @@ CVReturn drawNextFrame(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow, c
     [super viewDidLoad];
     
     // self.timer = [CADisplayLink displayLinkWithTarget:self selector:@selector(drawFrame)];
-    
+    [self enableVsync];
+}
+
+-(void) enableVsync {
     CVDisplayLinkRef timer;
     
     if (CVDisplayLinkCreateWithCGDisplay(CGMainDisplayID(), &timer)) { // error
         // TODO: error handling
     }
     
-    self.timer = timer;
+    self.vsyncTimer = timer;
     CVDisplayLinkSetOutputCallback(timer, drawNextFrame, (__bridge void *) self);
-    CVDisplayLinkStart(self.timer);
+    CVDisplayLinkStart(timer);
+}
+
+-(void) enableConstantRefresh {
+    [NSThread detachNewThreadSelector:@selector(constantRefreshThread:) toTarget:self withObject:nil];
+}
+
+-(void) constantRefreshThread:(id) unused {
+    self.constantRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.166666666666666666666666 target:self selector:@selector(constantRefreshFrame:) userInfo:nil repeats:true];
+}
+
+-(void) constantRefreshFrame:(id) unused {
+    [self drawNextFrame];
+}
+
+-(void) disableTimers {
+    if (self.vsyncTimer != nil) {
+        CVDisplayLinkStop(self.vsyncTimer);
+        self.vsyncTimer = nil;
+    }
+    
+    if (self.constantRefreshTimer != nil) {
+        [self.constantRefreshTimer invalidate];
+        self.constantRefreshTimer = nil;
+    }
 }
 
 -(void) drawNextFrame {
@@ -48,6 +76,7 @@ CVReturn drawNextFrame(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow, c
     id<MTLCommandBuffer> commands = [self.ctx.commands commandBuffer];
     id<MTLRenderCommandEncoder> renderEncoder = [commands renderCommandEncoderWithDescriptor:desc];
     self.ctx.renderEncoder = renderEncoder;
+    [renderEncoder setVertexBuffer:self.ctx.uniformBuffer offset:0 atIndex:1];
     
     callbackFunction(self.ctx.cppCtx, "drawFrame");
     
@@ -58,7 +87,29 @@ CVReturn drawNextFrame(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow, c
 }
 
 -(void) dealloc {
-    CVDisplayLinkStop(self.timer);
+    [self disableTimers];
+}
+
+-(void) keyDown:(NSEvent *) event {
+    unichar c = [[event charactersIgnoringModifiers] characterAtIndex:0];
+    charEvent(self.ctx.cppCtx, "keyDown", c);
+}
+
+-(void) keyUp:(NSEvent *) event {
+    unichar c = [[event charactersIgnoringModifiers] characterAtIndex:0];
+    charEvent(self.ctx.cppCtx, "keyUp", c);
+}
+
+-(void) mouseDown:(NSEvent *)event {
+    callbackFunction(self.ctx.cppCtx, "mouseDown");
+}
+
+-(void) mouseUp:(NSEvent *)event {
+    callbackFunction(self.ctx.cppCtx, "mouseUp");
+}
+
+-(void) mouseMoved:(NSEvent *)event {
+    mouseMove(self.ctx.cppCtx, event.deltaX, event.deltaY);
 }
 
 @end

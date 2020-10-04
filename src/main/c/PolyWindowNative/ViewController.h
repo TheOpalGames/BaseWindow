@@ -10,6 +10,10 @@
 
 @property(nonatomic) PolyWindowContext *ctx;
 
+-(void) enableVsync;
+-(void) enableConstantRefresh;
+-(void) disableTimers;
+
 @end
 
 #endif /* ViewController_h */
