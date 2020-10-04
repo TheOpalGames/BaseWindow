@@ -1,10 +1,13 @@
 #import "jni-interface-objc.h"
 #import "ViewController.h"
+#import "main-objc.h"
 
 @interface ViewController()
 
 @property(nonatomic) CVDisplayLinkRef vsyncTimer;
 @property(nonatomic) NSTimer *constantRefreshTimer;
+
+@property(nonatomic) PolyWindowContext *ctx;
 
 //-(CVReturn) drawFrame:(CVDisplayLinkRef) timer (const CVTimeStamp *) inNow, (const CVTimeStamp *) inOutputTime, (CVOptionFlags) flagsIn, (CVOptionFlags *) flagsOut;
 
@@ -26,6 +29,10 @@ CVReturn drawNextFrame(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow, c
     
     // self.timer = [CADisplayLink displayLinkWithTarget:self selector:@selector(drawFrame)];
     [self enableVsync];
+}
+
+-(void) setContext:(void *) ctx {
+    self.ctx = (__bridge PolyWindowContext *) ctx; // circular import issues otherwise
 }
 
 -(void) enableVsync {

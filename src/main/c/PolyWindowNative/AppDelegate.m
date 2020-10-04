@@ -20,7 +20,7 @@
     [[NSThread currentThread] threadDictionary][INIT_KEY] = nil;
     
     self.ctx.appDelegate = self;
-    self.viewController.ctx = self.ctx;
+    [self.viewController setContext:(__bridge void *)(self.ctx)];
     
     [self.ctx postInit];
 }
