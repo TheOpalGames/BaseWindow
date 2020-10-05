@@ -1,10 +1,7 @@
 package net.theopalgames.polywindow.metal;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
-import net.theopalgames.polywindow.BaseWindow;
-import net.theopalgames.polywindow.Framework;
-import net.theopalgames.polywindow.Game;
-import net.theopalgames.polywindow.InputCodes;
+import net.theopalgames.polywindow.*;
 import net.theopalgames.polywindow.transformation.RotationAboutPoint;
 import net.theopalgames.polywindow.transformation.Transformation;
 
@@ -62,6 +59,8 @@ public class MetalWindow extends BaseWindow {
 
     private boolean vsync;
     private boolean showMouse;
+
+    private final PolygonBuilder polygons = new PolygonBuilder(this);
 
     public MetalWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse) {
         super(game, name, x, y, z, vsync, showMouse);
@@ -443,14 +442,49 @@ public class MetalWindow extends BaseWindow {
 
     }
 
+    public void beginPolygon(PolygonType type) {
+        if (polygons.isUnused())
+            finishPolygon();
+
+        polygons.setType(type);
+    }
+
     @Override
     public void addVertex(double x, double y, double z) {
-
+        polygons.addVertex(new Vector(x, y, z));
     }
 
     @Override
     public void addVertex(double x, double y) {
+        addVertex(x, y, 0);
+    }
 
+    public void finishPolygon() {
+        polygons.reset();
+    }
+
+    public void fillTriangle(double x1, double y1, double x2, double y2, double x3, double y3) {
+        fillTriangle(x1, y1, 0, x2, y2, 0, x3, y3, 0);
+    }
+
+    public void fillTriangle(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
+        metal.draw(ctx, MetalConstants.PRIMITIVE_TRIANGLE, new float[] {
+                (float) x1,      (float) y1,           (float) z1, 1.0F,        1.0F, 1.0F, 1.0F, 1.0F,
+                (float) x2,      (float) y2,           (float) z2, 1.0F,        1.0F, 1.0F, 1.0F, 1.0F,
+                (float) x3,      (float) y3,           (float) z3, 1.0F,        1.0F, 1.0F, 1.0F, 1.0F,
+        });
+    }
+
+    public void drawTriangle(double x1, double y1, double x2, double y2, double x3, double y3) {
+        drawTriangle(x1, y1, 0, x2, y2, 0, x3, y3, 0);
+    }
+
+    public void drawTriangle(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
+        metal.draw(ctx, MetalConstants.PRIMITIVE_LINE_STRIP, new float[] {
+                (float) x1,      (float) y1,           (float) z1, 1.0F,        1.0F, 1.0F, 1.0F, 1.0F,
+                (float) x2,      (float) y2,           (float) z2, 1.0F,        1.0F, 1.0F, 1.0F, 1.0F,
+                (float) x3,      (float) y3,           (float) z3, 1.0F,        1.0F, 1.0F, 1.0F, 1.0F,
+        });
     }
 
     @Override

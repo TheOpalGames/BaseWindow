@@ -3,7 +3,7 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
-- (void) appplicationDidFinishLaunching:(NSNotification *)aNotification;
+- (void) applicationDidFinishLaunching:(NSNotification *)aNotification;
 - (void) applicationWillTerminate:(NSNotification *)aNotification;
 
 - (NSWindow *) getWindow;
