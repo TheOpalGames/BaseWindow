@@ -14,6 +14,8 @@ public class PolygonBuilder {
     }
 
     public void addVertex(Vector vertex) {
+        type.getClass(); // nonnull check.
+
         if (firstVertex == null) {
             firstVertex = vertex;
             return;
@@ -37,10 +39,11 @@ public class PolygonBuilder {
     public void reset() {
         firstVertex = null;
         lastVertex = null;
+        type = null;
     }
 
     public boolean isUnused() {
-        return firstVertex == null;
+        return type == null;
     }
 
     public void setType(PolygonType type) {
