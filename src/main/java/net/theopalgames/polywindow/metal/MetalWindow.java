@@ -511,4 +511,9 @@ public class MetalWindow extends Window {
         metal.quit();
         System.exit(0);
     }
+
+    @Override
+    public boolean canQuit() {
+        return true;
+    }
 }

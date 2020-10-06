@@ -327,4 +327,6 @@ public abstract class Window
 
     public abstract Framework getFramework();
     public abstract void quit();
+
+    public abstract boolean canQuit();
 }

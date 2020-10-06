@@ -21,7 +21,7 @@ import static com.badlogic.gdx.Input.Keys.*;
 
 public class LibGdxWindow extends Window
 {
-    public Application.ApplicationType appType;
+//    public Application.ApplicationType appType;
 
     private boolean previousKeyboard = false;
 
@@ -66,10 +66,13 @@ public class LibGdxWindow extends Window
 
     private List<Transformation> transformations;
 
+    private final PlatformHandler platform;
 
-    public LibGdxWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse)
+
+    public LibGdxWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse, PlatformHandler platform)
     {
         super(game, name, x, y, z, vsync, showMouse);
+        this.platform = platform;
     }
 
     Game getGame() { // accessor method because game is protected in superclass.
@@ -1267,7 +1270,12 @@ public class LibGdxWindow extends Window
 
     @Override
     public void quit() {
-        // TODO
+        platform.quit();
+    }
+
+    @Override
+    public boolean canQuit() {
+        return platform.canQuit();
     }
 }
 

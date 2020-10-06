@@ -1262,4 +1262,9 @@ public class LwjglWindow extends Window
     public void quit() {
         System.exit(0);
     }
+
+    @Override
+    public boolean canQuit() {
+        return true;
+    }
 }

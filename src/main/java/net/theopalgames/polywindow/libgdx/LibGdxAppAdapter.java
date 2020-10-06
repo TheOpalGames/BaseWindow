@@ -7,20 +7,20 @@ import com.badlogic.gdx.audio.Music;
 import net.theopalgames.polywindow.*;
 
 public class LibGdxAppAdapter extends ApplicationAdapter {
-    public static LibGdxAppAdapter instance;
-    public static LibGdxWindow window;
+    private static LibGdxAppAdapter instance;
+    private static LibGdxWindow window;
 
-    public static VibrationPlayer vibrationPlayer;
-//    public static BasePlatformHandler platformHandler;
+    private static VibrationPlayer vibrationPlayer;
+//    private static PlatformHandler platformHandler;
 //    public static IKeyboardHeightListener keyboardHeightListener;
 // TODO: What is this?
 
-    public static double pointWidth = -1;
-    public static double pointHeight = -1;
+    private static double pointWidth = -1;
+    private static double pointHeight = -1;
 
-    public static Application.ApplicationType appType;
+    private static Application.ApplicationType appType;
 
-    public static void initialize()
+    public static void initialize(PlatformHandler platform)
     {
         FileManager files = new LibGdxFileManager();
 
@@ -31,9 +31,9 @@ public class LibGdxAppAdapter extends ApplicationAdapter {
             throw new RuntimeException(e);
         }
 
-        window = new LibGdxWindow(game, "Tanks", 1400, 900, 1000, false, true);
+        window = new LibGdxWindow(game, "Tanks", 1400, 900, 1000, false, true, platform);
 
-        window.appType = appType;
+//        window.appType = appType;
         window.fileManager = files;
 //        Game.framework = Game.Framework.libgdx;
 //        Game.initScript();

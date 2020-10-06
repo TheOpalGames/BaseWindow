@@ -1,4 +1,4 @@
-package net.theopalgames.polywindow.libgdx.platform;
+package net.theopalgames.polywindow.libgdx.html;
 
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
@@ -46,7 +46,7 @@ public class HtmlLauncher extends GwtApplication {
     @Override
     public LibGdxAppAdapter createApplicationListener ()
     {
-        LibGdxAppAdapter.initialize(); // before the return
+        LibGdxAppAdapter.initialize(new HtmlPlatformHandler()); // before the return
         return new LibGdxAppAdapter();
     }
 }
