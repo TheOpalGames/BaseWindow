@@ -2,7 +2,7 @@ package net.theopalgames.polywindow.lwjgl;
 
 //import basewindow.BaseSoundPlayer;
 import org.apache.commons.io.IOUtils;
-import net.theopalgames.polywindow.BaseSoundPlayer;
+import net.theopalgames.polywindow.SoundPlayer;
 import org.lwjgl.openal.*;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
@@ -23,7 +23,7 @@ import static org.lwjgl.stb.STBVorbis.stb_vorbis_decode_memory;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.libc.LibCStdlib.free;
 
-public class LwjglSoundPlayer extends BaseSoundPlayer
+public class LwjglSoundPlayer extends SoundPlayer
 {
     public long context;
     public long device;

@@ -1,6 +1,7 @@
 package net.theopalgames.polywindow.swing;
 
 import net.theopalgames.polywindow.*;
+import net.theopalgames.polywindow.Window;
 import net.theopalgames.polywindow.swing.input.InputKeyboard;
 import net.theopalgames.polywindow.transformation.Transformation;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SwingWindow extends BaseWindow
+public class SwingWindow extends Window
 {
     public SwingDrawing drawing;
 
@@ -331,5 +332,10 @@ public class SwingWindow extends BaseWindow
     @Override
     public Framework getFramework() {
         return Framework.SWING;
+    }
+
+    @Override
+    public void quit() {
+        System.exit(0);
     }
 }

@@ -1,11 +1,11 @@
 package net.theopalgames.polywindow.swing;
 
-import net.theopalgames.polywindow.BaseFontRenderer;
+import net.theopalgames.polywindow.FontRenderer;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 
-public class SwingFontRenderer extends BaseFontRenderer
+public class SwingFontRenderer extends FontRenderer
 {
     public FontRenderContext frc = new FontRenderContext(null, true, true);
 

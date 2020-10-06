@@ -1,6 +1,5 @@
 package net.theopalgames.polywindow.libgdx;
 
-import com.apple.eio.FileManager;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -11,8 +10,8 @@ public class LibGdxAppAdapter extends ApplicationAdapter {
     public static LibGdxAppAdapter instance;
     public static LibGdxWindow window;
 
-    public static BaseVibrationPlayer vibrationPlayer;
-    public static BasePlatformHandler platformHandler;
+    public static VibrationPlayer vibrationPlayer;
+//    public static BasePlatformHandler platformHandler;
 //    public static IKeyboardHeightListener keyboardHeightListener;
 // TODO: What is this?
 
@@ -23,7 +22,7 @@ public class LibGdxAppAdapter extends ApplicationAdapter {
 
     public static void initialize()
     {
-        BaseFileManager files = new LibGdxFileManager();
+        FileManager files = new LibGdxFileManager();
 
         Game game;
         try {

@@ -1,6 +1,6 @@
 package net.theopalgames.polywindow.transformation;
 
-import net.theopalgames.polywindow.BaseWindow;
+import net.theopalgames.polywindow.Window;
 
 import java.util.function.Consumer;
 
@@ -10,7 +10,7 @@ public class Rotation extends Transformation
     public double pitch;
     public double roll;
 
-    public Rotation(BaseWindow window, double yaw, double pitch, double roll)
+    public Rotation(Window window, double yaw, double pitch, double roll)
     {
         super(window);
         this.yaw = yaw;

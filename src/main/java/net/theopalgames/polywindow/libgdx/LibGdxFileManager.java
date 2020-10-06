@@ -2,11 +2,11 @@ package net.theopalgames.polywindow.libgdx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import net.theopalgames.polywindow.BaseFileManager;
+import net.theopalgames.polywindow.FileManager;
 
 import java.io.InputStream;
 
-public class LibGdxFileManager extends BaseFileManager {
+public class LibGdxFileManager extends FileManager {
     @Override
     public LibGdxFile getFile(String file)
     {

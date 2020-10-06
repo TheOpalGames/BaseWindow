@@ -1,6 +1,6 @@
 package net.theopalgames.polywindow.transformation;
 
-import net.theopalgames.polywindow.BaseWindow;
+import net.theopalgames.polywindow.Window;
 
 import java.util.function.Consumer;
 
@@ -10,7 +10,7 @@ public class Translation extends Transformation
     public double y;
     public double z;
 
-    public Translation(BaseWindow window, double x, double y, double z)
+    public Translation(Window window, double x, double y, double z)
     {
         super(window);
         this.x = x;

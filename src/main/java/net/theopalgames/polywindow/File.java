@@ -4,11 +4,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public abstract class BaseFile
+public abstract class File
 {
     public String path;
 
-    public BaseFile(String path)
+    public File(String path)
     {
         this.path = path;
     }

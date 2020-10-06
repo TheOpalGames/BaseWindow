@@ -1,10 +1,10 @@
 package net.theopalgames.polywindow;
 
-public abstract class BaseFontRenderer
+public abstract class FontRenderer
 {
-    public BaseWindow home;
+    public Window home;
 
-    public BaseFontRenderer(BaseWindow h)
+    public FontRenderer(Window h)
     {
         this.home = h;
     }

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class BaseWindow
+public abstract class Window
 {
-    public BaseFontRenderer fontRenderer;
+    public FontRenderer fontRenderer;
 
     public boolean angled = false;
 
@@ -26,7 +26,7 @@ public abstract class BaseWindow
 
     public HashMap<Integer, InputPoint> touchPoints = new HashMap<Integer, InputPoint>();
 
-    public ArrayList<Integer> pressedKeys = new ArrayList<Integer>();
+    public ArrayList<Integer> pressedKeys = new ArrayList<>();
     public ArrayList<Integer> validPressedKeys = new ArrayList<Integer>();
 
     public ArrayList<Integer> textPressedKeys = new ArrayList<Integer>();
@@ -69,10 +69,10 @@ public abstract class BaseWindow
 
     public Transformation baseTransformation = new Translation(this, -0.5, -0.5, -1);
 
-    public BaseSoundPlayer soundPlayer;
+    public SoundPlayer soundPlayer;
     public boolean soundsEnabled = false;
 
-    public BaseVibrationPlayer vibrationPlayer;
+    public VibrationPlayer vibrationPlayer;
     public boolean vibrationsEnabled = false;
 
     public boolean antialiasingSupported = false;
@@ -80,13 +80,11 @@ public abstract class BaseWindow
 
     public static final HashMap<Integer, String> keyNames = new HashMap<>();
 
-    public BasePlatformHandler platformHandler;
-
     protected Game game;
 
-    public BaseFileManager fileManager;
+    public FileManager fileManager;
 
-    public BaseWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse)
+    public Window(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse)
     {
         this.game = game;
         this.name = name;
@@ -328,4 +326,5 @@ public abstract class BaseWindow
     }
 
     public abstract Framework getFramework();
+    public abstract void quit();
 }

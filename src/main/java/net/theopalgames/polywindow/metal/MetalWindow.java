@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MetalWindow extends BaseWindow {
+public class MetalWindow extends Window {
     private static boolean loaded;
     private static Field byteBufAddr;
 
@@ -504,5 +504,11 @@ public class MetalWindow extends BaseWindow {
 
     void onClose() {
         windowHandler.onWindowClose();
+    }
+
+    @Override
+    public void quit() {
+        metal.quit();
+        System.exit(0);
     }
 }

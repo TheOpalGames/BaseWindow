@@ -1,6 +1,5 @@
 package net.theopalgames.polywindow;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,16 +10,16 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ComputerFile extends BaseFile
+public class ComputerFile extends File
 {
-    public File file;
+    public java.io.File file;
     public Scanner scanner;
     public PrintWriter printWriter;
 
     public ComputerFile(String path)
     {
         super(path);
-        file = new File(path);
+        file = new java.io.File(path);
     }
 
     @Override
@@ -38,7 +37,7 @@ public class ComputerFile extends BaseFile
     @Override
     public void renameTo(String name)
     {
-        file.renameTo(new File(name));
+        file.renameTo(new java.io.File(name));
     }
 
     @Override

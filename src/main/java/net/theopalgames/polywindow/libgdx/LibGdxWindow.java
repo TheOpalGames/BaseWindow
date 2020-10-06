@@ -19,7 +19,7 @@ import java.util.Map;
 
 import static com.badlogic.gdx.Input.Keys.*;
 
-public class LibGdxWindow extends BaseWindow
+public class LibGdxWindow extends Window
 {
     public Application.ApplicationType appType;
 
@@ -1263,6 +1263,11 @@ public class LibGdxWindow extends BaseWindow
     @Override
     public Framework getFramework() {
         return Framework.LIBGDX;
+    }
+
+    @Override
+    public void quit() {
+        // TODO
     }
 }
 

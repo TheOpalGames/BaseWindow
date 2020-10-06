@@ -1,10 +1,10 @@
 package net.theopalgames.polywindow;
 
-public abstract class BaseSoundPlayer
+public abstract class SoundPlayer
 {
     public boolean musicPlaying = false;
 
-    public BaseSoundPlayer()
+    public SoundPlayer()
     {
 
     }

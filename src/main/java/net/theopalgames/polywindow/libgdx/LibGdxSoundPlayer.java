@@ -5,12 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
-import net.theopalgames.polywindow.BaseSoundPlayer;
+import net.theopalgames.polywindow.SoundPlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class LibGdxSoundPlayer extends BaseSoundPlayer
+public class LibGdxSoundPlayer extends SoundPlayer
 {
     //public Sound[] sounds = new Sound[50];
     //public int soundIndex = 0;

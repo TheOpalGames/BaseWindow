@@ -2,7 +2,7 @@ package net.theopalgames.polywindow.libgdx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import net.theopalgames.polywindow.BaseFile;
+import net.theopalgames.polywindow.File;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class LibGdxFile extends BaseFile {
+public class LibGdxFile extends File {
     public FileHandle file;
     public String[] contents;
     public int readingLine;

@@ -31,10 +31,12 @@ public class MetalCallbacks {
 
     }
 
+    @SuppressWarnings("unused")
     public void mouseDown() {
 
     }
 
+    @SuppressWarnings("unused")
     public void mouseUp() {
 
     }

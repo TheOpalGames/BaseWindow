@@ -1,9 +1,9 @@
 package net.theopalgames.polywindow.lwjgl;
 
-import net.theopalgames.polywindow.BaseFontRenderer;
+import net.theopalgames.polywindow.FontRenderer;
 import org.lwjgl.opengl.GL11;
 
-public class LwjglFontRenderer extends BaseFontRenderer
+public class LwjglFontRenderer extends FontRenderer
 {
     public String chars;
 	public int[] charSizes;

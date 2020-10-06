@@ -1,6 +1,6 @@
 package net.theopalgames.polywindow;
 
-public abstract class BaseVibrationPlayer
+public abstract class VibrationPlayer
 {
     public abstract void selectionChanged();
 

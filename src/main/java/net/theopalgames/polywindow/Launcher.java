@@ -10,13 +10,13 @@ import java.util.jar.Manifest;
 
 public class Launcher {
     public static void main(String[] args) throws Exception{
-        BaseFileManager files = new ComputerFileManager();
+        FileManager files = new ComputerFileManager();
         Game game = createGame(files);
 
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", game.getName());
 
-        BaseWindow window;
+        Window window;
 
         if (Arrays.asList(args).contains("swing")) {
             if (!game.isSwingSupported())
@@ -32,7 +32,8 @@ public class Launcher {
         window.run();
     }
 
-    public static Game createGame(BaseFileManager files) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+    @SuppressWarnings("unchecked")
+    public static Game createGame(FileManager files) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
         String gameLocation;
 
         try (InputStream data = files.getInternalFileContents("META-INF/MANIFEST.MF")) {

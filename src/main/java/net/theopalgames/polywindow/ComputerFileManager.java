@@ -2,10 +2,10 @@ package net.theopalgames.polywindow;
 
 import java.io.InputStream;
 
-public class ComputerFileManager extends BaseFileManager
+public class ComputerFileManager extends FileManager
 {
     @Override
-    public BaseFile getFile(String file)
+    public File getFile(String file)
     {
         return new ComputerFile(file);
     }

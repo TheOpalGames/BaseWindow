@@ -28,7 +28,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public class LwjglWindow extends BaseWindow
+public class LwjglWindow extends Window
 {
     protected long window;
 
@@ -1161,7 +1161,7 @@ public class LwjglWindow extends BaseWindow
 
         if (s == null || (key >= InputCodes.KEY_KP_0 && key <= InputCodes.KEY_KP_EQUAL))
         {
-            String s2 = BaseWindow.keyNames.get(key);
+            String s2 = Window.keyNames.get(key);
             if (s2 == null)
                 return "Key " + key;
             else
@@ -1256,5 +1256,10 @@ public class LwjglWindow extends BaseWindow
     @Override
     public Framework getFramework() {
         return Framework.LWJGL;
+    }
+
+    @Override
+    public void quit() {
+        System.exit(0);
     }
 }

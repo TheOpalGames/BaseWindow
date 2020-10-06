@@ -1,8 +1,8 @@
 package net.theopalgames.polywindow;
 
 public interface Game {
-    void preInit(BaseFileManager fileManager);
-    void init(BaseWindow window);
+    void preInit(FileManager fileManager);
+    void init(Window window);
 
     String getName();
 

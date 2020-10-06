@@ -3,9 +3,9 @@ package net.theopalgames.polywindow.libgdx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import net.theopalgames.polywindow.BaseFontRenderer;
+import net.theopalgames.polywindow.FontRenderer;
 
-public class LibGdxFontRenderer extends BaseFontRenderer
+public class LibGdxFontRenderer extends FontRenderer
 {
     String chars;
     int[] charSizes;
