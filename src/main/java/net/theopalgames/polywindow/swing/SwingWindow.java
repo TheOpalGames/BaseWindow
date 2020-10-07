@@ -347,4 +347,14 @@ public class SwingWindow extends Window
     public boolean canQuit() {
         return true;
     }
+    
+    @Override
+    protected Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse) {
+        return new SwingWindow(getWindowManager(), name, x, y, z, vsync, showMouse);
+    }
+    
+    @Override
+    protected boolean canMakeNewWindow() {
+        return true;
+    }
 }
