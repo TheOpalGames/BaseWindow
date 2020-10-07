@@ -1284,7 +1284,7 @@ public class LibGdxWindow extends Window
 
     @Override
     protected Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse) {
-        return platform.newWindow(name, x, y, z, vsync, showMouse);
+        return platform.newWindow(getWindowManager(), name, x, y, z, vsync, showMouse);
     }
 
     @Override
