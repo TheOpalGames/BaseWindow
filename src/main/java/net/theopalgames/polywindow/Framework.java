@@ -2,6 +2,8 @@ package net.theopalgames.polywindow;
 
 /**
  * The different frameworks that can be used by PolyWindow.
+ *
+ * @author aehmttw and hallowizer
  */
 public enum Framework {
     /**

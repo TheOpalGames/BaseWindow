@@ -2,6 +2,8 @@ package net.theopalgames.polywindow;
 
 /**
  * Handles window-related events.
+ *
+ * @author aehmttw
  */
 public interface IWindowHandler 
 {
