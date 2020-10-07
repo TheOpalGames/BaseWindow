@@ -13,6 +13,7 @@ public final class WindowManager {
     private final Game game;
     private Window primaryWindow;
     private final List<Window> windows = new ArrayList<>();
+    private List<Window> immutableWindowList;
 
     WindowManager(Game game) {
         this.game = game;
@@ -51,6 +52,7 @@ public final class WindowManager {
     public Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse) {
         Window window = primaryWindow.newWindow(name, x, y, z, vsync, showMouse);
         windows.add(window);
+        immutableWindowList = null;
         return window;
     }
     
@@ -69,6 +71,10 @@ public final class WindowManager {
      * @return An immutable list containing the windows controlled by this window manager.
      */
     public List<Window> getWindows() {
-        return Collections.unmodifiableList(windows);
+        if (immutableWindowList != null)
+            return immutableWindowList;
+        
+        immutableWindowList = Collections.unmodifiableList(windows);
+        return immutableWindowList;
     }
 }
