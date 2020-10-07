@@ -42,7 +42,7 @@ public class LibGdxWindow extends Window
 
     public Matrix4 perspective = new Matrix4();
 
-    public ArrayList<Integer> rawTextInput = new ArrayList<Integer>();
+    public List<Integer> rawTextInput = new ArrayList<Integer>();
 
     protected int currentDrawMode = -1;
     protected boolean depthTest = false;
@@ -68,10 +68,14 @@ public class LibGdxWindow extends Window
 
     private final PlatformHandler platform;
 
+    public LibGdxWindow(Game game, PlatformHandler platform) {
+        super(game);
+        this.platform = platform;
+    }
 
-    public LibGdxWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse, PlatformHandler platform)
+    public LibGdxWindow(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse, PlatformHandler platform)
     {
-        super(game, name, x, y, z, vsync, showMouse);
+        super(windowManager, name, x, y, z, vsync, showMouse);
         this.platform = platform;
     }
 
@@ -1094,7 +1098,7 @@ public class LibGdxWindow extends Window
     }
 
     @Override
-    public ArrayList<Integer> getRawTextKeys()
+    public List<Integer> getRawTextKeys()
     {
         return rawTextInput;
     }
@@ -1276,6 +1280,16 @@ public class LibGdxWindow extends Window
     @Override
     public boolean canQuit() {
         return platform.canQuit();
+    }
+
+    @Override
+    protected Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse) {
+        return platform.newWindow(name, x, y, z, vsync, showMouse);
+    }
+
+    @Override
+    protected boolean canMakeNewWindow() {
+        return platform.canMakeNewWindow();
     }
 }
 

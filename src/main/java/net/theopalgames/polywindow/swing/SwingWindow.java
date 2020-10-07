@@ -24,11 +24,15 @@ public class SwingWindow extends Window
 
     public TextClipboard clipboard;
 
-    public ArrayList<Integer> rawTextInput = new ArrayList<Integer>();
+    public List<Integer> rawTextInput = new ArrayList<Integer>();
 
-    public SwingWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse)
+    public SwingWindow(Game game) {
+        super(game);
+    }
+
+    public SwingWindow(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse)
     {
-        super(game, name, x, y, z, vsync, showMouse);
+        super(windowManager, name, x, y, z, vsync, showMouse);
         this.self = this;
         this.fontRenderer = new SwingFontRenderer(this);
         this.clipboard = new TextClipboard();
@@ -259,7 +263,7 @@ public class SwingWindow extends Window
     }
 
     @Override
-    public ArrayList<Integer> getRawTextKeys()
+    public List<Integer> getRawTextKeys()
     {
         return this.rawTextInput;
     }

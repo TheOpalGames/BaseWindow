@@ -44,9 +44,9 @@ public class MetalWindow extends Window {
         loaded = true;
     }
 
-    private MetalNative metal;
+    private MetalNativeCode metal;
     private long ctx;
-    private MetalCallbacks callbacks; // only to prevent GC.
+    private MetalNativeCallbacks callbacks; // only to prevent GC.
 
     private float colorR;
     private float colorG;
@@ -62,8 +62,12 @@ public class MetalWindow extends Window {
 
     private final PolygonBuilder polygons = new PolygonBuilder(this);
 
-    public MetalWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse) {
-        super(game, name, x, y, z, vsync, showMouse);
+    public MetalWindow(Game game) {
+        super(game);
+    }
+
+    public MetalWindow(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse) {
+        super(windowManager, name, x, y, z, vsync, showMouse);
         this.vsync = vsync;
         this.showMouse = showMouse;
     }
@@ -80,9 +84,9 @@ public class MetalWindow extends Window {
             throw new RuntimeException("Failed to load Metal native", e);
         }
 
-        metal = new MetalNative();
+        metal = new MetalNativeCode();
 
-        callbacks = new MetalCallbacks(this);
+        callbacks = new MetalNativeCallbacks(this);
         metal.init(callbacks, vsync, showMouse);
     }
 

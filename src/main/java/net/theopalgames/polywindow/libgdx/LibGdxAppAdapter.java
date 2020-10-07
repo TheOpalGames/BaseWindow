@@ -31,7 +31,7 @@ public class LibGdxAppAdapter extends ApplicationAdapter {
             throw new RuntimeException(e);
         }
 
-        window = new LibGdxWindow(game, "Tanks", 1400, 900, 1000, false, true, platform);
+        window = new LibGdxWindow(game, platform);
 
 //        window.appType = appType;
         window.fileManager = files;

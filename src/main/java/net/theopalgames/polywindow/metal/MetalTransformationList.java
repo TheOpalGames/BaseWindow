@@ -8,9 +8,9 @@ final class MetalTransformationList extends LinkedList<Transformation>  {
     private static final double[][] noTransformations = new double[0][];
 
     private final long ctx;
-    private final MetalNative metal;
+    private final MetalNativeCode metal;
 
-    MetalTransformationList(long ctx, MetalNative metal) {
+    MetalTransformationList(long ctx, MetalNativeCode metal) {
         this.ctx = ctx;
         this.metal = metal;
     }

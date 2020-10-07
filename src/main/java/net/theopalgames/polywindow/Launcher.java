@@ -9,6 +9,10 @@ import java.util.Arrays;
 import java.util.jar.Manifest;
 
 public class Launcher {
+    public static final int DEFAULT_X = 1400;
+    public static final int DEFAULT_Y = 900;
+    public static final int DEFAULT_Z = 1000;
+
     public static void main(String[] args) throws Exception{
         FileManager files = new ComputerFileManager();
         Game game = createGame(files);
@@ -22,9 +26,9 @@ public class Launcher {
             if (!game.isSwingSupported())
                 throw new IllegalArgumentException("Cannot use Swing as it is not supported in " + game.getName());
             
-            window = new SwingWindow(game, game.getName(), 1400, 900, 1000, false, true);
+            window = new SwingWindow(game);
         } else
-            window = new LwjglWindow(game, game.getName(), 1400, 900, 1000, false, true);
+            window = new LwjglWindow(game);
 
         window.fileManager = files;
         game.init(window);

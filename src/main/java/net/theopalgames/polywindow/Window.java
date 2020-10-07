@@ -7,6 +7,7 @@ import net.theopalgames.polywindow.transformation.Translation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class Window
 {
@@ -24,16 +25,16 @@ public abstract class Window
     public double absoluteMouseX;
     public double absoluteMouseY;
 
-    public HashMap<Integer, InputPoint> touchPoints = new HashMap<Integer, InputPoint>();
+    public Map<Integer, InputPoint> touchPoints = new HashMap<Integer, InputPoint>();
 
-    public ArrayList<Integer> pressedKeys = new ArrayList<>();
-    public ArrayList<Integer> validPressedKeys = new ArrayList<Integer>();
+    public List<Integer> pressedKeys = new ArrayList<>();
+    public List<Integer> validPressedKeys = new ArrayList<Integer>();
 
-    public ArrayList<Integer> textPressedKeys = new ArrayList<Integer>();
-    public ArrayList<Integer> textValidPressedKeys = new ArrayList<Integer>();
+    public List<Integer> textPressedKeys = new ArrayList<Integer>();
+    public List<Integer> textValidPressedKeys = new ArrayList<Integer>();
 
-    public ArrayList<Integer> pressedButtons = new ArrayList<Integer>();
-    public ArrayList<Integer> validPressedButtons = new ArrayList<Integer>();
+    public List<Integer> pressedButtons = new ArrayList<Integer>();
+    public List<Integer> validPressedButtons = new ArrayList<Integer>();
 
     public boolean validScrollUp;
     public boolean validScrollDown;
@@ -83,10 +84,15 @@ public abstract class Window
     protected Game game;
 
     public FileManager fileManager;
+    private final WindowManager windowManager;
 
-    public Window(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse)
-    {
-        this.game = game;
+    public Window(Game game) {
+        this(new WindowManager(game), game.getName(), Launcher.DEFAULT_X, Launcher.DEFAULT_Y, Launcher.DEFAULT_Z, true, true);
+        windowManager.init(this);
+    }
+
+    public Window(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse) {
+        this.game = windowManager.getGame();
         this.name = name;
         this.absoluteWidth = x;
         this.absoluteHeight = y;
@@ -96,6 +102,7 @@ public abstract class Window
         this.vsync = vsync;
         this.windowHandler = game.getWindowHandler();
         this.showMouseOnLaunch = showMouse;
+        this.windowManager = windowManager;
 
         if (System.getProperties().toString().contains("Mac OS X"))
             mac = true;
@@ -223,7 +230,7 @@ public abstract class Window
 
     public abstract void setVsync(boolean enable);
 
-    public abstract ArrayList<Integer> getRawTextKeys();
+    public abstract List<Integer> getRawTextKeys();
 
     public abstract String getKeyText(int key);
 
@@ -329,4 +336,12 @@ public abstract class Window
     public abstract void quit();
 
     public abstract boolean canQuit();
+
+    public WindowManager getWindowManager() {
+        return windowManager;
+    }
+
+    protected abstract Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse);
+
+    protected abstract boolean canMakeNewWindow();
 }

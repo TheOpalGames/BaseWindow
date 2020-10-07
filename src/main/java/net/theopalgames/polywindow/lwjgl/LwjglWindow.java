@@ -51,9 +51,13 @@ public class LwjglWindow extends Window
 
     private List<Transformation> transformations = new ArrayList<Transformation>();
 
-    public LwjglWindow(Game game, String name, int x, int y, int z, boolean vsync, boolean showMouse)
+    public LwjglWindow(Game game) {
+        super(game);
+    }
+
+    public LwjglWindow(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse)
     {
-        super(game, name, x, y, z, vsync, showMouse);
+        super(windowManager, name, x, y, z, vsync, showMouse);
 
         try
         {
@@ -1143,7 +1147,7 @@ public class LwjglWindow extends Window
     }
 
     @Override
-    public ArrayList<Integer> getRawTextKeys()
+    public List<Integer> getRawTextKeys()
     {
         return this.textValidPressedKeys;
     }

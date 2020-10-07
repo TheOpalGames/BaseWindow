@@ -1,9 +1,9 @@
 package net.theopalgames.polywindow.metal;
 
-public class MetalCallbacks {
+public class MetalNativeCallbacks {
     private MetalWindow window;
 
-    public MetalCallbacks(MetalWindow window) {
+    public MetalNativeCallbacks(MetalWindow window) {
         this.window = window;
     }
 
