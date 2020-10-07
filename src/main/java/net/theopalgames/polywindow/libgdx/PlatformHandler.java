@@ -9,4 +9,6 @@ public interface PlatformHandler {
 
     Window newWindow(WindowManager manager, String name, int x, int y, int z, boolean vsync, boolean showMouse);
     boolean canMakeNewWindow();
+    
+    double getUsableWindowHeight();
 }

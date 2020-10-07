@@ -27,4 +27,9 @@ public final class HtmlPlatformHandler implements PlatformHandler {
     public boolean canMakeNewWindow() {
         return true;
     }
+    
+    @Override
+    public double getUsableWindowHeight() {
+        return 1.0;
+    }
 }

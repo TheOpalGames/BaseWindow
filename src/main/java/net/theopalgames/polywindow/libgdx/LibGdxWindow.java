@@ -394,9 +394,9 @@ public class LibGdxWindow extends Window
             this.previousKeyboard = this.showKeyboard;
         }
 
-        if (Gdx.app.getType() == Application.ApplicationType.Android)
+//        if (Gdx.app.getType() == Application.ApplicationType.Android)
 //            this.keyboardFraction = Tanks.keyboardHeightListener.getUsableWindowHeight();
-            this.keyboardFraction = game.getUsableWindowHeight();
+        this.keyboardFraction = platform.getUsableWindowHeight();
 
         this.updater.update();
         this.drawer.draw();
