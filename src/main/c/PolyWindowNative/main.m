@@ -10,13 +10,6 @@ typedef struct {
     matrix_float4x4 matrix;
 } Transformation;
 
-typedef struct {
-    id<MTLTexture> texture;
-    int width;
-    int height;
-    char *bytes;
-} Texture;
-
 @implementation PolyWindowContext
 
 -(id)init:(void *)cppCtx {
@@ -24,11 +17,6 @@ typedef struct {
     
     [self retain]; // mem addr stored in Java.
     self.cppCtx = cppCtx;
-    
-    [[NSThread currentThread] threadDictionary][INIT_KEY] = self;
-    
-    const char *argv[0];
-    NSApplicationMain(0, argv);
     
     return self;
 }
@@ -66,13 +54,16 @@ typedef struct {
 //    currentCtx = [[NSMutableDictionary alloc] init];
 //}
 
-static void unused(char a, ...) {
-    // NOOP, just to get rid of compiler warnings.
-}
+//static void unused(char a, ...) {
+//    // NOOP, just to get rid of compiler warnings.
+//}
 
-void newCtx(void *cppCtx) {
+void createApp(void *cppCtx) {
     PolyWindowContext *ctx = [[PolyWindowContext alloc] init:cppCtx];
-    unused(0, ctx);
+    [[NSThread currentThread] threadDictionary][INIT_KEY] = ctx;
+    
+    const char *argv[0];
+    NSApplicationMain(0, argv);
 }
 
 void draw(PolyWindowContext *ctx, int primitive, int nVertices, float vertexData[]) {
@@ -180,4 +171,15 @@ void setClipboard(char *text) {
     NSPasteboard *clipboard = [NSPasteboard generalPasteboard];
     NSString *nsText = [[NSString alloc] initWithUTF8String:text];
     [clipboard setString:nsText forType:NSPasteboardTypeString];
+}
+
+PolyWindowContext *newWindow(PolyWindowContext *ctx, void *cppCtx) {
+    ViewController *viewController = [[ViewController alloc] init];
+    PolyWindowContext *newCtx = [[PolyWindowContext alloc] init:cppCtx];
+    [viewController setContext:newCtx];
+    
+    [newCtx postInit];
+    
+    [NSWindow windowWithContentViewController:viewController];
+    return newCtx;
 }

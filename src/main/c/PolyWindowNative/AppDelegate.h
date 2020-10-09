@@ -6,7 +6,7 @@
 - (void) applicationDidFinishLaunching:(NSNotification *)aNotification;
 - (void) applicationWillTerminate:(NSNotification *)aNotification;
 
-- (NSWindow *) getWindow;
+//- (NSWindow *) getWindow;
 //- (NSView *) getMainView;
 //- (ViewController *) getPrimaryViewController;
 

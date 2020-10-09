@@ -20,7 +20,7 @@
     [[NSThread currentThread] threadDictionary][INIT_KEY] = nil;
     
     self.ctx.appDelegate = self;
-    self.ctx.viewController = self.mainViewController;
+    self.ctx.viewController = [self mainViewController];
     
     [self.ctx postInit];
 }
@@ -30,9 +30,9 @@
 //    callbackFunction(self.ctx.cppCtx, "appClosed");
 }
 
-- (NSWindow *) getWindow {
-    return [self window];
-}
+//- (NSWindow *) getWindow {
+//    return [self window];
+//}
 
 //- (NSView *) getMainView {
 //    return self.mainView;

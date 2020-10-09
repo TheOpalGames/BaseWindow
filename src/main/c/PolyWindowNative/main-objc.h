@@ -13,17 +13,17 @@
     
 }
 
-@property(nonatomic) id<MTLDevice> device;
-@property(nonatomic) id<MTLLibrary> library;
-@property(nonatomic) id<MTLCommandQueue> commands;
-@property(nonatomic) CAMetalLayer *metalLayer;
-@property(nonatomic) AppDelegate *appDelegate;
-@property(nonatomic) ViewController *viewController;
+@property(nonatomic, strong) id<MTLDevice> device;
+@property(nonatomic, strong) id<MTLLibrary> library;
+@property(nonatomic, strong) id<MTLCommandQueue> commands;
+@property(nonatomic, strong) CAMetalLayer *metalLayer;
+@property(nonatomic, strong) AppDelegate *appDelegate;
+@property(nonatomic, strong) ViewController *viewController;
 @property(nonatomic) void *cppCtx;
-@property(nonatomic) id<MTLRenderPipelineState> pipelineState;
-@property(nonatomic) id<MTLRenderCommandEncoder> renderEncoder;
+@property(nonatomic, strong) id<MTLRenderPipelineState> pipelineState;
+@property(nonatomic, strong) id<MTLRenderCommandEncoder> renderEncoder;
 
-@property(nonatomic) id<MTLBuffer> uniformBuffer;
+@property(nonatomic, strong) id<MTLBuffer> uniformBuffer;
 @property(nonatomic) bool hasTransformations;
 
 @property(nonatomic) bool showCursor;
@@ -34,10 +34,28 @@
 
 @end
 
+typedef struct {
+    id<MTLTexture> texture;
+    int width;
+    int height;
+    char *bytes;
+} Texture;
+
 
 //void init(void);
-void newCtx(void *);
+void createApp(void *);
 void draw(PolyWindowContext *ctx, int primitive, int nVertices, float vertexData[]);
 void replaceMatrices(PolyWindowContext *ctx, int nMatrices, double **matrices);
+
+void toggleShowCursor(PolyWindowContext *ctx);
+void toggleVsync(PolyWindowContext *ctx);
+
+Texture *loadTexture(PolyWindowContext *ctx, char *bytes, int width, int height);
+void setTexture(PolyWindowContext *ctx, Texture *texture, float originX, float originY, float sizeX, float sizeY);
+
+char *getClipboard(void);
+void setClipboard(char *clipboard);
+
+PolyWindowContext *newWindow(PolyWindowContext *ctx, void *cppCtx)
 
 #endif /* main_h */
