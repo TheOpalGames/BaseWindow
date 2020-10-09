@@ -30,9 +30,9 @@ public class SwingWindow extends Window
         super(game);
     }
 
-    public SwingWindow(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse)
+    private SwingWindow(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse, IUpdater updater, IDrawer drawer)
     {
-        super(windowManager, name, x, y, z, vsync, showMouse);
+        super(windowManager, name, x, y, z, vsync, showMouse, updater, drawer);
         this.self = this;
         this.fontRenderer = new SwingFontRenderer(this);
         this.clipboard = new TextClipboard();
@@ -349,8 +349,8 @@ public class SwingWindow extends Window
     }
     
     @Override
-    protected Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse) {
-        return new SwingWindow(getWindowManager(), name, x, y, z, vsync, showMouse);
+    protected Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse, IUpdater updater, IDrawer drawer) {
+        return new SwingWindow(getWindowManager(), name, x, y, z, vsync, showMouse, updater, drawer);
     }
     
     @Override

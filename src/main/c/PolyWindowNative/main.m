@@ -1,15 +1,28 @@
 #include "main-objc.h"
 
+#ifndef AAPLTextureIndexBaseColor
+#define AAPLTextureIndexBaseColor 0
+#endif
+
 @import simd;
 
 typedef struct {
     matrix_float4x4 matrix;
 } Transformation;
 
+typedef struct {
+    id<MTLTexture> texture;
+    int width;
+    int height;
+    char *bytes;
+} Texture;
+
 @implementation PolyWindowContext
 
 -(id)init:(void *)cppCtx {
     self = [super init];
+    
+    [self retain]; // mem addr stored in Java.
     self.cppCtx = cppCtx;
     
     [[NSThread currentThread] threadDictionary][INIT_KEY] = self;
@@ -21,6 +34,8 @@ typedef struct {
 }
 
 -(void) postInit {
+    [self.viewController setContext:self];
+    
     self.device = MTLCreateSystemDefaultDevice();
     self.library = [self.device newDefaultLibrary];
     self.commands = [self.device newCommandQueue];
@@ -28,8 +43,8 @@ typedef struct {
     self.metalLayer = [CAMetalLayer layer];
     self.metalLayer.device = self.device;
     self.metalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm;
-    self.metalLayer.frame = [self.appDelegate getMainView].frame;
-    [[self.appDelegate getMainView].layer addSublayer:self.metalLayer];
+    self.metalLayer.frame = [[self.viewController view] frame];
+    [[self.viewController view].layer addSublayer:self.metalLayer];
     
     self.uniformBuffer = [self.device newBufferWithLength:sizeof(Transformation) options:MTLResourceOptionCPUCacheModeDefault];
     self.hasTransformations = false;
@@ -38,8 +53,8 @@ typedef struct {
     self.vsync = true;
     
     MTLRenderPipelineDescriptor *desc = [[MTLRenderPipelineDescriptor alloc] init];
-    [desc setVertexFunction:[self.library newFunctionWithName:@"vertex_function"]];
-    [desc setFragmentFunction:[self.library newFunctionWithName:@"fragment_function"]];
+    [desc setVertexFunction:[self.library newFunctionWithName:@"vertex_main"]];
+    [desc setFragmentFunction:[self.library newFunctionWithName:@"fragment_main"]];
     desc.colorAttachments[0].pixelFormat = MTLPixelFormatBGRA8Unorm;
     self.pipelineState = [self.device newRenderPipelineStateWithDescriptor:desc error:nil];
     
@@ -113,12 +128,56 @@ void toggleShowCursor(PolyWindowContext *ctx) {
 }
 
 void toggleVsync(PolyWindowContext *ctx) {
-    [[ctx.appDelegate getViewController] disableTimers];
+    [ctx.viewController disableTimers];
     
     if (ctx.vsync)
-        [[ctx.appDelegate getViewController] enableVsync];
+        [ctx.viewController enableVsync];
     else
-        [[ctx.appDelegate getViewController] enableConstantRefresh];
+        [ctx.viewController enableConstantRefresh];
     
     ctx.vsync = !(ctx.vsync);
+}
+
+Texture *loadTexture(PolyWindowContext *ctx, char *bytes, int width, int height) {
+    MTLTextureDescriptor *desc = [[MTLTextureDescriptor alloc] init];
+    desc.pixelFormat = MTLPixelFormatBGRA8Unorm;
+    desc.width = width;
+    desc.height = height;
+    
+    id<MTLTexture> texture = [ctx.device newTextureWithDescriptor:desc];
+    
+    Texture *textureData = malloc(sizeof(Texture));
+    textureData->texture = texture;
+    textureData->width = width;
+    textureData->height = height;
+    textureData->bytes = bytes;
+    
+    [textureData->texture retain]; // held by Java
+    
+    return textureData;
+}
+
+void setTexture(PolyWindowContext *ctx, Texture *texture, float originX, float originY, float sizeX, float sizeY) {
+    if (texture != NULL) {
+        MTLRegion region = {
+            {originX, originY, 0},
+            {texture->width, texture->height, 1}
+        };
+        
+        [texture->texture replaceRegion:region mipmapLevel:0 withBytes:texture->bytes bytesPerRow:(4*texture->width)];
+    }
+    
+    [ctx.renderEncoder setFragmentTexture:texture->texture atIndex:AAPLTextureIndexBaseColor];
+}
+
+char *getClipboard() {
+    NSPasteboard *clipboard = [NSPasteboard generalPasteboard];
+    NSData *data = [clipboard dataForType:NSPasteboardTypeString];
+    return (char *) [data bytes];
+}
+
+void setClipboard(char *text) {
+    NSPasteboard *clipboard = [NSPasteboard generalPasteboard];
+    NSString *nsText = [[NSString alloc] initWithUTF8String:text];
+    [clipboard setString:nsText forType:NSPasteboardTypeString];
 }

@@ -18,6 +18,7 @@
 @property(nonatomic) id<MTLCommandQueue> commands;
 @property(nonatomic) CAMetalLayer *metalLayer;
 @property(nonatomic) AppDelegate *appDelegate;
+@property(nonatomic) ViewController *viewController;
 @property(nonatomic) void *cppCtx;
 @property(nonatomic) id<MTLRenderPipelineState> pipelineState;
 @property(nonatomic) id<MTLRenderCommandEncoder> renderEncoder;

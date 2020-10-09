@@ -6,8 +6,8 @@
 @interface AppDelegate ()
 
 @property (weak) IBOutlet NSWindow *window;
-@property (weak) IBOutlet NSView *mainView;
-@property (weak) IBOutlet ViewController *viewController;
+//@property (weak) IBOutlet NSView *mainView;
+@property (weak) IBOutlet ViewController *mainViewController;
 
 @property PolyWindowContext *ctx;
 
@@ -20,26 +20,22 @@
     [[NSThread currentThread] threadDictionary][INIT_KEY] = nil;
     
     self.ctx.appDelegate = self;
-    [self.viewController setContext:(__bridge void *)(self.ctx)];
+    self.ctx.viewController = self.mainViewController;
     
     [self.ctx postInit];
 }
 
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-    callbackFunction(self.ctx.cppCtx, "appClosed");
+//    callbackFunction(self.ctx.cppCtx, "appClosed");
 }
 
 - (NSWindow *) getWindow {
-    return self.window;
+    return [self window];
 }
 
-- (NSView *) getMainView {
-    return self.mainView;
-}
-
--(NSViewController *) getViewController {
-    return self.viewController;
-}
+//- (NSView *) getMainView {
+//    return self.mainView;
+//}
 
 @end

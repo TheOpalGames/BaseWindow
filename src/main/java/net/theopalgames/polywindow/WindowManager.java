@@ -37,22 +37,40 @@ public final class WindowManager {
     }
     
     /**
+     *Creates a new {@link Window}.
+     *
+     * @param name The name to be shown.
+     * @param x The horizontal length of the window
+     * @param y The height of the window.
+     * @param z The max depth that can be drawn in the window.
+     * @param vsync Should vsync be enabled?
+     * @param showMouse Should the mouse be shown?
+     * @param frameHandler The {@link IFrameHandler} that handles drawing and updating.
+     * @return The new window.
+     */
+    public Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse, IFrameHandler frameHandler) {
+        return newWindow(name, x, y, z, vsync, showMouse, frameHandler, frameHandler);
+    }
+    
+    /**
      * Creates a new {@link Window}.
      *
      * @param name The name to be shown on the window.
      * @param x The horizontal length of the window.
      * @param y The height of the window.
-     * @param z
+     * @param z The max depth that can be drawn in the window.
      * @param vsync Should vsync be enabled?
      * @param showMouse Should the mouse be shown?
      * @return The newly created window.
      *
      * @throws UnsupportedOperationException If window creation is not supported.
      */
-    public Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse) {
-        Window window = primaryWindow.newWindow(name, x, y, z, vsync, showMouse);
+    public Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse, IUpdater updater, IDrawer drawer) {
+        Window window = primaryWindow.newWindow(name, x, y, z, vsync, showMouse, updater, drawer);
         windows.add(window);
         immutableWindowList = null;
+        
+        window.run();
         return window;
     }
     

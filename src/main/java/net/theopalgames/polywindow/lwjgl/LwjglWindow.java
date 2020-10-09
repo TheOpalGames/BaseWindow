@@ -55,9 +55,9 @@ public class LwjglWindow extends Window
         super(game);
     }
 
-    public LwjglWindow(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse)
+    private LwjglWindow(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse, IUpdater updater, IDrawer drawer)
     {
-        super(windowManager, name, x, y, z, vsync, showMouse);
+        super(windowManager, name, x, y, z, vsync, showMouse, updater, drawer);
 
         try
         {
@@ -1273,8 +1273,8 @@ public class LwjglWindow extends Window
     }
     
     @Override
-    protected Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse) {
-        return new LwjglWindow(getWindowManager(), name, x, y, z, vsync, showMouse);
+    protected Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse, IUpdater updater, IDrawer drawer) {
+        return new LwjglWindow(getWindowManager(), name, x, y, z, vsync, showMouse, updater, drawer);
     }
     
     @Override

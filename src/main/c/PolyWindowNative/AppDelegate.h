@@ -7,8 +7,8 @@
 - (void) applicationWillTerminate:(NSNotification *)aNotification;
 
 - (NSWindow *) getWindow;
-- (NSView *) getMainView;
-- (ViewController *) getViewController;
+//- (NSView *) getMainView;
+//- (ViewController *) getPrimaryViewController;
 
 @end
 

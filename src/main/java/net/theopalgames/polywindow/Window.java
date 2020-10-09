@@ -87,18 +87,18 @@ public abstract class Window
     private final WindowManager windowManager;
 
     public Window(Game game) {
-        this(new WindowManager(game), game.getName(), Launcher.DEFAULT_X, Launcher.DEFAULT_Y, Launcher.DEFAULT_Z, true, true);
+        this(new WindowManager(game), game.getName(), Launcher.DEFAULT_X, Launcher.DEFAULT_Y, Launcher.DEFAULT_Z, true, true, game.getUpdater(), game.getDrawer());
         windowManager.init(this);
     }
 
-    public Window(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse) {
+    public Window(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse, IUpdater updater, IDrawer drawer) {
         this.game = windowManager.getGame();
         this.name = name;
         this.absoluteWidth = x;
         this.absoluteHeight = y;
         this.absoluteDepth = z;
-        this.updater = game.getUpdater();
-        this.drawer = game.getDrawer();
+        this.updater = updater;
+        this.drawer = drawer;
         this.vsync = vsync;
         this.windowHandler = game.getWindowHandler();
         this.showMouseOnLaunch = showMouse;
@@ -341,7 +341,7 @@ public abstract class Window
         return windowManager;
     }
 
-    protected abstract Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse);
+    protected abstract Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse, IUpdater updater, IDrawer drawer);
 
     protected abstract boolean canMakeNewWindow();
 }

@@ -119,4 +119,8 @@ CVReturn drawNextFrame(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow, c
     mouseMove(self.ctx.cppCtx, event.deltaX, event.deltaY);
 }
 
+- (void)viewDidDisappear:(NSEvent *)event {
+    callbackFunction(self.ctx.cppCtx, "windowClosed");
+}
+
 @end

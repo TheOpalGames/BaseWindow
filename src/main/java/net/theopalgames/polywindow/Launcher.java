@@ -27,8 +27,13 @@ public enum Launcher {
      */
     public static final int DEFAULT_Y = 900;
     
-    // what is this? render distance?
+    /**
+     * The default max depth that can be drawn in the window.
+     */
     public static final int DEFAULT_Z = 1000;
+    
+    public static final boolean SHOW_MOUSE_DEFAULT = true;
+    public static final boolean VSYNC_DEFAULT = true;
     
     /**
      * Main function, please don't call.

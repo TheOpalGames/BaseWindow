@@ -61,15 +61,25 @@ public class MetalWindow extends Window {
     private boolean showMouse;
 
     private final PolygonBuilder polygons = new PolygonBuilder(this);
+    
+    private final boolean primaryWindow;
 
     public MetalWindow(Game game) {
         super(game);
+        vsync = Launcher.VSYNC_DEFAULT;
+        showMouse = Launcher.SHOW_MOUSE_DEFAULT;
+        primaryWindow = true;
     }
 
-    public MetalWindow(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse) {
-        super(windowManager, name, x, y, z, vsync, showMouse);
+    MetalWindow(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse, IUpdater updater, IDrawer drawer, long ctx, MetalNativeCallbacks callbacks) {
+        super(windowManager, name, x, y, z, vsync, showMouse, updater, drawer);
         this.vsync = vsync;
         this.showMouse = showMouse;
+        primaryWindow = false;
+        
+        this.metal = new MetalNativeCode();
+        this.ctx = ctx;
+        this.callbacks = callbacks;
     }
 
     Game getGame() {
@@ -78,6 +88,9 @@ public class MetalWindow extends Window {
 
     @Override
     public void run() {
+        if (!primaryWindow)
+            return;
+        
         try {
             loadNative();
         } catch (IOException e) {
@@ -343,7 +356,7 @@ public class MetalWindow extends Window {
 
         metal.draw(ctx, MetalConstants.PRIMITIVE_TRIANGLE, new float[] { // 2 triangles
                 // Triangle 1
-                (float) x,           (float) y,           (float) z, 1.0F,        1.0F, 1.0F, 1.0F, 1.0F,
+                (float) x,           (float) y,           (float) z, 1.0F,        1.0F, 1.0F, 1.0F, 1.0F, // colors unused here
                 (float) (x+sX),      (float) y,           (float) z, 1.0F,        1.0F, 1.0F, 1.0F, 1.0F,
                 (float) (x+sX),      (float) (y+sY),      (float) z, 1.0F,        1.0F, 1.0F, 1.0F, 1.0F,
 
@@ -387,12 +400,12 @@ public class MetalWindow extends Window {
 
     @Override
     public String getClipboard() {
-        return null;
+        return metal.getClipboard();
     }
 
     @Override
     public void setClipboard(String s) {
-
+        metal.setClipboard(s);
     }
 
     @Override
@@ -518,6 +531,18 @@ public class MetalWindow extends Window {
 
     @Override
     public boolean canQuit() {
+        return true;
+    }
+    
+    @Override
+    protected Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse, IUpdater updater, IDrawer drawer) {
+        MetalNativeCallbacks newCallbacks = new MetalNativeCallbacks();
+        long newCtx = metal.newWindow(ctx, newCallbacks);
+        return new MetalWindow(getWindowManager(), name, x, y, z, vsync, showMouse, updater, drawer, newCtx, newCallbacks);
+    }
+    
+    @Override
+    protected boolean canMakeNewWindow() {
         return true;
     }
 }

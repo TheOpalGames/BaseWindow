@@ -2,8 +2,13 @@ package net.theopalgames.polywindow.metal;
 
 public class MetalNativeCallbacks {
     private MetalWindow window;
-
-    public MetalNativeCallbacks(MetalWindow window) {
+    
+    MetalNativeCallbacks() {}
+    MetalNativeCallbacks(MetalWindow window) {
+        this.window = window;
+    }
+    
+    void setWindow(MetalWindow window) {
         this.window = window;
     }
 
@@ -42,7 +47,7 @@ public class MetalNativeCallbacks {
     }
 
     @SuppressWarnings("unused")
-    public void appClosed() {
+    public void windowClosed() {
         try {
             window.onClose();
         } catch (Throwable e) {

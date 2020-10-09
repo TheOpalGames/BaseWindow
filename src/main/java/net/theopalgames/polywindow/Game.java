@@ -28,14 +28,14 @@ public interface Game {
     String getName();
     
     /**
-     * Gets an instance of {@link IUpdater} that gets called every frame.
+     * Gets an instance of {@link IUpdater} for the first window that gets called every frame.
      *
      * @return an instance of {@link IUpdater}
      */
     IUpdater getUpdater();
     
     /**
-     * Gets an instance of {@link IDrawer} that gets called every frame.
+     * Gets an instance of {@link IDrawer} for the first window that gets called every frame.
      *
      * @return an instance of {@link IDrawer}
      */

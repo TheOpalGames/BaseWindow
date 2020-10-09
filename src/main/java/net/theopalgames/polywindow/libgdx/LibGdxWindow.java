@@ -73,9 +73,9 @@ public class LibGdxWindow extends Window
         this.platform = platform;
     }
 
-    public LibGdxWindow(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse, PlatformHandler platform)
+    public LibGdxWindow(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse, PlatformHandler platform, IUpdater updater, IDrawer drawer)
     {
-        super(windowManager, name, x, y, z, vsync, showMouse);
+        super(windowManager, name, x, y, z, vsync, showMouse, updater, drawer);
         this.platform = platform;
     }
 
@@ -1283,8 +1283,8 @@ public class LibGdxWindow extends Window
     }
 
     @Override
-    protected Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse) {
-        return platform.newWindow(getWindowManager(), name, x, y, z, vsync, showMouse);
+    protected Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse, IUpdater updater, IDrawer drawer) {
+        return platform.newWindow(getWindowManager(), name, x, y, z, vsync, showMouse, updater, drawer);
     }
 
     @Override
