@@ -4,15 +4,40 @@ import net.theopalgames.polywindow.Window;
 
 import java.util.function.Consumer;
 
+/**
+ * A transformation that shifts all points equally.
+ */
 public class Translation extends Transformation
 {
+    /**
+     * The x coordinate to add to every point.
+     */
     public double x;
+    
+    /**
+     * The y coordinate to add to every point.
+     */
     public double y;
+    
+    /**
+     * The z coordinate to add to every point.
+     */
     public double z;
-
+    
+    private final Window window;
+    
+    /**
+     * Creates a new translation.
+     *
+     * @param window The window to translate.
+     * @param x The shift in the x coordinate.
+     * @param y The shift in the y coordinate.
+     * @param z The shift in the z coordinate.
+     */
     public Translation(Window window, double x, double y, double z)
     {
-        super(window);
+        this.window = window;
+        
         this.x = x;
         this.y = y;
         this.z = z;

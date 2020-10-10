@@ -4,20 +4,41 @@ import net.theopalgames.polywindow.Window;
 
 import java.util.function.Consumer;
 
+/**
+ * A rotation transformation, creating angle POP', where (0,0,0) is the center.
+ */
 public class Rotation extends Transformation
 {
+    /**
+     * The horizontal angle difference of the 3D rotation.
+     */
     public double yaw;
+    
+    /**
+     * The vertical angle difference of the 3D rotation.
+     */
     public double pitch;
+    
+    /**
+     * Angle to rotate the actual screen by.
+     */
     public double roll;
-
-    public Rotation(Window window, double yaw, double pitch, double roll)
+    
+    /**
+     * Creates a rotation.
+     *
+     * @param yaw The horizontal angle difference of the 3D rotation.
+     * @param pitch The vertical angle difference of the 3D rotation.
+     * @param roll The angle to rotate the screen plane by.
+     */
+    public Rotation(double yaw, double pitch, double roll)
     {
-        super(window);
         this.yaw = yaw;
         this.pitch = pitch;
         this.roll = roll;
     }
-
+    
+    @Override
     public void addMatrices(Consumer<double[]> registry)
     {
 //        window.yaw += yaw;
