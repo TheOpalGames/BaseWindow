@@ -4,6 +4,8 @@ import java.util.function.Consumer;
 
 /**
  * A linear transformation to be applied to all points on the window.
+ *
+ * @author hallowizer
  */
 public abstract class Transformation
 {

@@ -6,6 +6,8 @@ import java.util.function.Consumer;
 
 /**
  * A rotation not necessarily around (0,0,0).
+ *
+ * @author aehmttw and hallowizer
  */
 public class RotationAboutPoint extends Rotation
 {

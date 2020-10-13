@@ -6,6 +6,8 @@ import java.util.function.Consumer;
 
 /**
  * A rotation transformation, creating angle POP', where (0,0,0) is the center.
+ *
+ * @author aehmttw and hallowizer
  */
 public class Rotation extends Transformation
 {

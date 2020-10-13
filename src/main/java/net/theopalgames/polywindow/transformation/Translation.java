@@ -6,6 +6,8 @@ import java.util.function.Consumer;
 
 /**
  * A transformation that shifts all points equally.
+ *
+ * @author aehmttw and hallowizer
  */
 public class Translation extends Transformation
 {
