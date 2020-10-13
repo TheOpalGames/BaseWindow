@@ -178,8 +178,8 @@ PolyWindowContext *newWindow(PolyWindowContext *ctx, void *cppCtx) {
     PolyWindowContext *newCtx = [[PolyWindowContext alloc] init:cppCtx];
     [viewController setContext:newCtx];
     
+    [NSWindow windowWithContentViewController:viewController];
     [newCtx postInit];
     
-    [NSWindow windowWithContentViewController:viewController];
     return newCtx;
 }

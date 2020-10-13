@@ -10,30 +10,12 @@ import java.util.Arrays;
 import java.util.jar.Manifest;
 
 /**
- * Launches PolyWindow on the desktop.
+ * Launches PolyWindow on the desktop and assists in the launching on LibGDX.
  *
  * @author hallowizer
  */
 public enum Launcher {
     ;
-    
-    /**
-     * The default horizontal length of a new window.
-     */
-    public static final int DEFAULT_X = 1400;
-    
-    /**
-     * The default height of a new window.
-     */
-    public static final int DEFAULT_Y = 900;
-    
-    /**
-     * The default max depth that can be drawn in the window.
-     */
-    public static final int DEFAULT_Z = 1000;
-    
-    public static final boolean SHOW_MOUSE_DEFAULT = true;
-    public static final boolean VSYNC_DEFAULT = true;
     
     /**
      * Main function, please don't call.

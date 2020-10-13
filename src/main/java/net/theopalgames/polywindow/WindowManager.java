@@ -37,7 +37,7 @@ public final class WindowManager {
     }
     
     /**
-     *Creates a new {@link Window}.
+     * Creates a new {@link Window}.
      *
      * @param name The name to be shown.
      * @param x The horizontal length of the window
@@ -61,6 +61,8 @@ public final class WindowManager {
      * @param z The max depth that can be drawn in the window.
      * @param vsync Should vsync be enabled?
      * @param showMouse Should the mouse be shown?
+     * @param updater The updater that gets called every frame.
+     * @param drawer The drawer that gets called every frame.
      * @return The newly created window.
      *
      * @throws UnsupportedOperationException If window creation is not supported.
@@ -72,6 +74,16 @@ public final class WindowManager {
         
         window.run();
         return window;
+    }
+    
+    /**
+     * Creates a window from a {@link WindowConfiguration}.
+     *
+     * @param config The config with the settings for this window.
+     * @return The newly created window.
+     */
+    public Window newWindow(WindowConfiguration config) {
+        return newWindow(config.name, config.x, config.y, config.z, config.vsync, config.showMouse, config.updater, config.drawer);
     }
     
     /**

@@ -87,8 +87,12 @@ public abstract class Window
     private final WindowManager windowManager;
 
     public Window(Game game) {
-        this(new WindowManager(game), game.getName(), Launcher.DEFAULT_X, Launcher.DEFAULT_Y, Launcher.DEFAULT_Z, true, true, game.getUpdater(), game.getDrawer());
+        this(game, game.getInitialWindowConfig()); // so only one call to getInitialWindowConfig()V
         windowManager.init(this);
+    }
+    
+    private Window(Game game, WindowConfiguration config) {
+        this(new WindowManager(game), config.name, config.x, config.y, config.z, config.vsync, config.showMouse, config.updater, config.drawer);
     }
 
     public Window(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse, IUpdater updater, IDrawer drawer) {

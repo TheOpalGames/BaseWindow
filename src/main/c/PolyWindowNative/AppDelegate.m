@@ -1,7 +1,7 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import "main-objc.h"
-#import "jni-interface-objc.h"
+//#import "jni-interface-objc.h"
 
 @interface AppDelegate ()
 

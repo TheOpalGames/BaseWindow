@@ -21,25 +21,18 @@ public interface Game {
     void init(Window window);
     
     /**
-     * Gets the name of the game to be used in the title bar.
+     * Gets the name of the game for purposes such as the menu bar.
      *
      * @return The game's name.
      */
     String getName();
     
     /**
-     * Gets an instance of {@link IUpdater} for the first window that gets called every frame.
+     * Sets the settings of the first window created.
      *
-     * @return an instance of {@link IUpdater}
+     * @return A {@link WindowConfiguration} with the settings for the first window.
      */
-    IUpdater getUpdater();
-    
-    /**
-     * Gets an instance of {@link IDrawer} for the first window that gets called every frame.
-     *
-     * @return an instance of {@link IDrawer}
-     */
-    IDrawer getDrawer();
+    WindowConfiguration getInitialWindowConfig();
     
     /**
      * Gets an instance of {@link IWindowHandler} that gets called for window-related events.

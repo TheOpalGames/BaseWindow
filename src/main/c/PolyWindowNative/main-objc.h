@@ -56,6 +56,6 @@ void setTexture(PolyWindowContext *ctx, Texture *texture, float originX, float o
 char *getClipboard(void);
 void setClipboard(char *clipboard);
 
-PolyWindowContext *newWindow(PolyWindowContext *ctx, void *cppCtx)
+PolyWindowContext *newWindow(PolyWindowContext *ctx, void *cppCtx);
 
 #endif /* main_h */
