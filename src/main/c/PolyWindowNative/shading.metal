@@ -33,6 +33,7 @@ typedef struct {
 vertex VertexOut vertex_main(device VertexIn *vertices [[buffer(1)]], constant Transformation &transformation [[buffer(0)]], uint index [[vertex_id]]) {
     VertexOut ret;
     ret.position = transformation.matrix * vertices[index].position; // with GPU efficiency
+    ret.position = float4(ret.position.x/ret.position.w, ret.position.y/ret.position.w, ret.position.z/ret.position.w, 1);
     ret.color = half4(vertices[index].color);
     return ret;
 }
