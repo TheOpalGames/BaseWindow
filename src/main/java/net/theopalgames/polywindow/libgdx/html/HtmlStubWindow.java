@@ -1,16 +1,14 @@
 package net.theopalgames.polywindow.libgdx.html;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import net.theopalgames.polywindow.Framework;
-import net.theopalgames.polywindow.Window;
-import net.theopalgames.polywindow.WindowManager;
+import net.theopalgames.polywindow.*;
 import net.theopalgames.polywindow.transformation.Transformation;
 
 import java.util.List;
 
 final class HtmlStubWindow extends Window {
     public HtmlStubWindow(WindowManager windowManager, String name, int x, int y, int z, boolean vsync, boolean showMouse, JavaScriptObject ctx) {
-        super(windowManager, name, x, y, z, vsync, showMouse);
+        super(windowManager, name, x, y, z, vsync, showMouse, null, null);
     }
     
     @Override
@@ -244,9 +242,14 @@ final class HtmlStubWindow extends Window {
     }
     
     @Override
-    protected Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse) {
+    protected Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse, IUpdater updater, IDrawer drawer) {
         return null;
     }
+    
+//    @Override
+//    protected Window newWindow(String name, int x, int y, int z, boolean vsync, boolean showMouse) {
+//        return null;
+//    }
     
     @Override
     protected boolean canMakeNewWindow() {

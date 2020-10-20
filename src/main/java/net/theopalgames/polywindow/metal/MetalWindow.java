@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+
 public class MetalWindow extends Window {
     private static boolean loaded;
     private static Field byteBufAddr;
@@ -66,8 +69,8 @@ public class MetalWindow extends Window {
 
     public MetalWindow(Game game) {
         super(game);
-        vsync = Launcher.VSYNC_DEFAULT;
-        showMouse = Launcher.SHOW_MOUSE_DEFAULT;
+        vsync = WindowConfiguration.VSYNC_DEFAULT;
+        showMouse = WindowConfiguration.SHOW_MOUSE_DEFAULT;
         primaryWindow = true;
     }
 
@@ -121,12 +124,35 @@ public class MetalWindow extends Window {
 
     @Override
     public void fillOval(double x, double y, double sX, double sY) {
-
+        fillOval(x, y, 0, sX, sY, true);
     }
 
     @Override
     public void fillOval(double x, double y, double z, double sX, double sY, boolean depthTest) {
-
+//        if (depthTest)
+//        {
+//            glEnable(GL_DEPTH_TEST);
+//
+//            if (colorA < 1)
+//                glDepthMask(false);
+//        }
+    
+        x += sX / 2;
+        y += sY / 2;
+    
+        int sides = (int) (sX + sY + Math.max(z / 20, 0)) / 4 + 5;
+    
+//        glBegin(GL_TRIANGLE_FAN);
+//        for (double i = 0; i < Math.PI * 2; i += Math.PI * 2 / sides)
+//        {
+//            glVertex3d(x + Math.cos(i) * sX / 2, y + Math.sin(i) * sY / 2, z);
+    
+        beginPolygon(PolygonType.FILL);
+        
+        for (double i = 0; i < 2*Math.PI; i += 2*Math.PI/sides)
+            addVertex(x+Math.cos(i)*sX/2, y+Math.sin(i)*sY/2, z);
+        
+        finishPolygon();
     }
 
     @Override
@@ -164,12 +190,22 @@ public class MetalWindow extends Window {
 
     @Override
     public void drawOval(double x, double y, double sX, double sY) {
-
+        drawOval(x, y, 0, sX, sY);
     }
 
     @Override
     public void drawOval(double x, double y, double z, double sX, double sY) {
-
+        x += sX / 2;
+        y += sY / 2;
+    
+        int sides = (int) (sX + sY + Math.max(z / 20, 0)) / 4 + 5;
+    
+        beginPolygon(PolygonType.OUTLINE);
+    
+        for (double i = 0; i < 2*Math.PI; i += 2*Math.PI/sides)
+            addVertex(x+Math.cos(i)*sX/2, y+Math.sin(i)*sY/2, z);
+    
+        finishPolygon();
     }
 
     @Override

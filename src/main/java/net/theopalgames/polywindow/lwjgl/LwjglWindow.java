@@ -424,7 +424,7 @@ public class LwjglWindow extends Window
 
         loadPerspective();
         glTranslated(x, y, z);
-        new Rotation(this, -yaw, -pitch, -roll).addMatrices(this::transform);
+        new Rotation(-yaw, -pitch, -roll).addMatrices(this::transform);
 
         glBegin(GL_TRIANGLE_FAN);
         for (double i = 0; i < Math.PI * 2; i += Math.PI * 2 / sides)
@@ -460,7 +460,7 @@ public class LwjglWindow extends Window
 
         loadPerspective();
         glTranslated(x, y, z);
-        new Rotation(this, -this.yaw, -this.pitch, -this.roll).addMatrices(this::transform);
+        new Rotation(-this.yaw, -this.pitch, -this.roll).addMatrices(this::transform);
 
         glBegin(GL_TRIANGLES);
         double step = Math.PI * 2 / sides;
