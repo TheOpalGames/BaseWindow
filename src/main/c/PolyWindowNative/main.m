@@ -4,11 +4,11 @@
 #define AAPLTextureIndexBaseColor 0
 #endif
 
-@import simd;
+#include <stdarg.h>
 
 typedef struct {
-    matrix_float4x4 matrix;
-} Transformation;
+    bool skipTransformations;
+} ShaderOptions;
 
 @implementation PolyWindowContext
 
@@ -35,7 +35,10 @@ typedef struct {
     [[self.viewController view].layer addSublayer:self.metalLayer];
     
     self.uniformBuffer = [self.device newBufferWithLength:sizeof(Transformation) options:MTLResourceOptionCPUCacheModeDefault];
-    self.hasTransformations = false;
+    
+    setTransformation(self, false);
+    
+    self.optionsBuffer = [self.device newBufferWithLength:sizeof(ShaderOptions) options:MTLResourceOptionCPUCacheModeDefault];
     
     self.showCursor = true;
     self.vsync = true;
@@ -66,15 +69,19 @@ void createApp(void *cppCtx) {
     NSApplicationMain(0, argv);
 }
 
-void draw(PolyWindowContext *ctx, int primitive, int nVertices, float vertexData[]) {
+void draw(PolyWindowContext *ctx, int primitive, int nVertices, float vertexData[], bool skipTransformations) {
     id<MTLBuffer> vertexBuffer = [ctx.device newBufferWithBytes:vertexData length:nVertices options:MTLResourceOptionCPUCacheModeDefault];
+    
+    ShaderOptions options;
+    options.skipTransformations = skipTransformations;
+    memcpy([ctx.optionsBuffer contents], &options, sizeof(ShaderOptions));
     
     [ctx.renderEncoder setRenderPipelineState:ctx.pipelineState];
     [ctx.renderEncoder setVertexBuffer:vertexBuffer offset:0 atIndex:1];
     [ctx.renderEncoder drawPrimitives:primitive vertexStart:0 vertexCount:nVertices];
 }
 
-static matrix_float4x4 toMatrix(double *matrix) {
+static matrix_float4x4 toMatrix(float *matrix) {
     matrix_float4x4 res = {
         .columns[0] = {matrix[ 0], matrix[ 1], matrix[ 2], matrix[ 3]},
         .columns[1] = {matrix[ 4], matrix[ 5], matrix[ 6], matrix[ 7]},
@@ -84,7 +91,7 @@ static matrix_float4x4 toMatrix(double *matrix) {
     return res;
 }
 
-static matrix_float4x4 multiplyMatrices(int nMatrices, double **matrices) {
+static matrix_float4x4 transform(int nMatrices, float **matrices) { // for hungry lumas only
     matrix_float4x4 finalMatrix = toMatrix(matrices[nMatrices-2]);
     
     for (int i = nMatrices-2; i >= 0; i++) {
@@ -94,19 +101,55 @@ static matrix_float4x4 multiplyMatrices(int nMatrices, double **matrices) {
     return finalMatrix;
 }
 
-void replaceMatrices(PolyWindowContext *ctx, int nMatrices, double **matrices) {
-    if (nMatrices == 0) {
-        ctx.hasTransformations = false;
-        return;
+static matrix_float4x4 multiplyMatrices(int nMatrices, float **matrices) {
+    matrix_float4x4 finalMatrix = toMatrix(matrices[nMatrices-2]);
+    
+    for (int i = nMatrices-2; i >= 0; i++) {
+        finalMatrix = simd_mul(toMatrix(matrices[i]), finalMatrix);
     }
+    
+    return finalMatrix;
+}
+
+float *transformVector(PolyWindowContext *ctx, float nonVector[4]) {
+    simd_float4 vector = {
+        nonVector[0], nonVector[1], nonVector[2], nonVector[3]
+    };
+    
+    simd_float4 res = simd_mul(ctx.transformation->matrix, vector);
+    
+    float *nonVecRes = malloc(sizeof(float)*4);
+    nonVecRes[0] = res[0];
+    nonVecRes[1] = res[1];
+    nonVecRes[2] = res[2];
+    nonVecRes[3] = res[3];
+    
+    return nonVecRes;
+}
+
+void setTransformation(PolyWindowContext *ctx, bool hasTransformations, ...) {
+    Transformation transformation;
+    transformation.hasTransformations = hasTransformations;
+    
+    if (hasTransformations) {
+        va_list args;
+        va_start(args, hasTransformations);
+        
+        transformation.matrix = va_arg(args, matrix_float4x4);
+        
+        va_end(args);
+    }
+    
+    memcpy([ctx.uniformBuffer contents], &transformation, sizeof(Transformation));
+}
+
+void replaceMatrices(PolyWindowContext *ctx, int nMatrices, float **matrices) {
+    if (nMatrices == 0)
+        return setTransformation(ctx, false);
     
     matrix_float4x4 theMatrix = multiplyMatrices(nMatrices, matrices);
     
-    Transformation transformation;
-    transformation.matrix = theMatrix;
-    memcpy([ctx.uniformBuffer contents], &transformation, sizeof(Transformation));
-    
-    ctx.hasTransformations = true;
+    setTransformation(ctx, true, theMatrix);
 }
 
 void toggleShowCursor(PolyWindowContext *ctx) {

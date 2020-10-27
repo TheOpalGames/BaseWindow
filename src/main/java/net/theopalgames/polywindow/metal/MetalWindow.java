@@ -17,9 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-
 public class MetalWindow extends Window {
     private static boolean loaded;
     private static Field byteBufAddr;
@@ -87,6 +84,14 @@ public class MetalWindow extends Window {
 
     Game getGame() {
         return game;
+    }
+    
+    MetalNativeCode getMetal() {
+        return metal;
+    }
+    
+    long ctx() {
+        return ctx;
     }
 
     @Override
@@ -157,22 +162,50 @@ public class MetalWindow extends Window {
 
     @Override
     public void fillFacingOval(double x, double y, double z, double sX, double sY, boolean depthTest) {
-
+        float[] center = metal.transform(new float[] {(float) x, (float) y, (float) z, 1F});
+        
+        float transformedSX = metal.transform(new float[] {center[0]+(float) sX, center[1], center[2], center[3]})[0];
+        float transformedSY = metal.transform(new float[] {center[0], center[1]+(float) sY, center[2], center[3]})[1];
+        
+        fillOval(center[0], center[1], center[2], transformedSX, transformedSY, depthTest);
     }
 
     @Override
     public void fillGlow(double x, double y, double sX, double sY) {
-
+        fillGlow(x, y, 0, sX, sY, true);
     }
 
     @Override
     public void fillGlow(double x, double y, double z, double sX, double sY, boolean depthTest) {
+        x += sX / 2;
+        y += sY / 2;
+    
+        int sides = (int) (sX + sY + Math.max(z / 20, 0)) / 4 + 5;
 
+//        glBegin(GL_TRIANGLE_FAN);
+//        for (double i = 0; i < Math.PI * 2; i += Math.PI * 2 / sides)
+//        {
+//            glVertex3d(x + Math.cos(i) * sX / 2, y + Math.sin(i) * sY / 2, z);
+    
+//        beginPolygon(PolygonType.FILL);
+    
+        for (double i = 0, j = 1; i < 2*Math.PI; i += 2*Math.PI/sides)
+//            addVertex(x+Math.cos(i)*sX/2, y+Math.sin(i)*sY/2, z);
+            metal.draw(ctx, MetalConstants.PRIMITIVE_TRIANGLE, new float[] {
+                    (float) (x+Math.cos(i)*sX/2), (float) (y+Math.sin(i)*sY/2), (float) z, 1F,       0F,     0F,     0F,     0F,
+                    (float) (x+Math.cos(j)*sX/2), (float) (y+Math.sin(j)*sY/2), (float) z, 1F,       0F,     0F,     0F,     0F,
+                    (float) x,                    (float) y,                    (float) z, 1F,       colorR, colorG, colorB, colorA
+            });
     }
 
     @Override
     public void fillFacingGlow(double x, double y, double z, double sX, double sY, boolean depthTest) {
-
+        float[] center = metal.transform(new float[] {(float) x, (float) y, (float) z, 1F});
+    
+        float transformedSX = metal.transform(new float[] {center[0]+(float) sX, center[1], center[2], center[3]})[0];
+        float transformedSY = metal.transform(new float[] {center[0], center[1]+(float) sY, center[2], center[3]})[1];
+    
+        fillGlow(center[0], center[1], center[2], transformedSX, transformedSY, depthTest);
     }
 
     @Override

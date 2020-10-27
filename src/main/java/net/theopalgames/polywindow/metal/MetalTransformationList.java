@@ -127,12 +127,9 @@ final class MetalTransformationList extends LinkedList<Transformation>  {
             metal.changeMatrices(ctx, noTransformations);
             return;
         }
-
-        List<double[]> transformations = new ArrayList<>();
-
-        for (Transformation transformation : this)
-            transformation.addMatrices(transformations::add);
-
+    
+        List<double[]> transformations = new LinkedList<>();
+        this.forEach(transformation -> transformation.addMatrices(transformations::add));
         metal.changeMatrices(ctx, transformations.toArray(noTransformations));
     }
 }

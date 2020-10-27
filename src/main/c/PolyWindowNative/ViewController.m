@@ -74,16 +74,21 @@ CVReturn drawNextFrame(CVDisplayLinkRef displayLink, const CVTimeStamp *inNow, c
 -(void) drawNextFrame {
     id<CAMetalDrawable> drawable = [self.ctx.metalLayer nextDrawable];
     
-    MTLRenderPassDescriptor *desc = [MTLRenderPassDescriptor renderPassDescriptor];
-    desc.colorAttachments[0].texture = drawable.texture;
-    desc.colorAttachments[0].loadAction = MTLLoadActionClear;
-    desc.colorAttachments[0].clearColor = MTLClearColorMake(1, 1, 1, 1);
-    desc.colorAttachments[0].storeAction = MTLStoreActionStore;
+    MTLRenderPassDescriptor *renderDesc = [MTLRenderPassDescriptor renderPassDescriptor];
+    renderDesc.colorAttachments[0].texture = drawable.texture;
+    renderDesc.colorAttachments[0].loadAction = MTLLoadActionClear;
+    renderDesc.colorAttachments[0].clearColor = MTLClearColorMake(1, 1, 1, 1);
+    renderDesc.colorAttachments[0].storeAction = MTLStoreActionStore;
     
     id<MTLCommandBuffer> commands = [self.ctx.commands commandBuffer];
-    id<MTLRenderCommandEncoder> renderEncoder = [commands renderCommandEncoderWithDescriptor:desc];
+    
+    id<MTLRenderCommandEncoder> renderEncoder = [commands renderCommandEncoderWithDescriptor:renderDesc];
     self.ctx.renderEncoder = renderEncoder;
+    
+    MTLComputePassDescriptor *computeDesc = [MTLComputePa]
+    
     [renderEncoder setVertexBuffer:self.ctx.uniformBuffer offset:0 atIndex:1];
+    [renderEncoder setVertexBuffer:self.ctx.optionsBuffer offset:0 atIndex:2];
     
     callbackFunction(self.ctx.cppCtx, "drawFrame");
     
